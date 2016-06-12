@@ -4,6 +4,7 @@
 
 int main(int argc, char** argv)
 {
+    std::cout << "sdkfjdskfsd";
     if (!al_init())
     {
         std::cout << "Failed to start Allegro.";
