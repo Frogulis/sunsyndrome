@@ -12,6 +12,7 @@
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
+					<Add option="-std=c++11" />
 					<Add option="-g" />
 				</Compiler>
 			</Target>
@@ -30,11 +31,13 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Linker>
 			<Add library="allegro" />
 		</Linker>
 		<Unit filename="source/IDisplay.h" />
+		<Unit filename="source/ImageList.cpp" />
 		<Unit filename="source/ImageList.h" />
 		<Unit filename="source/Space.cpp" />
 		<Unit filename="source/Space.h" />
