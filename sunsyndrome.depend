@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1465655212 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1465655620 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<allegro5/allegro.h>
 
