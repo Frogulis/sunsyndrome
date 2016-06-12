@@ -1,9 +1,12 @@
 #ifndef __SPACEH_GUARD
 #define __SPACEH_GUARD
 
+class ImageList;
+
 #include <string>
 
 #include <allegro5/allegro.h>
+
 
 class Space
 {
@@ -17,12 +20,12 @@ public:
     int getDepth();
     int getHeight();
 
-    int lookupTypeAt(int w, int d, int h);
+    int getIDFromLocation(int w, int d, int h);
     ALLEGRO_BITMAP* getImageOfType(int type);
 
 private:
-    int*** type_array;
-    //image_list something something
+    int*** id_array;
+    ImageList* il;
 };
 
 #endif // __SPACEH_GUARD
