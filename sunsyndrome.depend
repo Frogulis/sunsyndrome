@@ -1,20 +1,39 @@
 # depslib dependency file v1.0
-1465804285 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1465838475 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
-	<fstream>
+	<string>
 	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"ImageList.h"
+	"TopDownDisplay.h"
 
-1465815004 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+1465836925 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
 	"ImageList.h"
 
-1465812943 d:\code projects\cpp\sunsyndrome\source\imagelist.h
+1465836418 d:\code projects\cpp\sunsyndrome\source\imagelist.h
 	<string>
 	<fstream>
 	<iostream>
+	<algorithm>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
 1465656819 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 
-1465656734 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
+1465838048 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
+	"TopDownDisplay.h"
+	<iostream>
+
+1465838375 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
+	"IDisplay.h"
+
+1465838377 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"ImageList.h"
+	"Space.h"
+
+1465739134 d:\code projects\cpp\sunsyndrome\source\space.h
+	<string>
+	<allegro5/allegro.h>
 

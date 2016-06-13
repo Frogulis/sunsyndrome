@@ -1,2 +1,3 @@
-sprites/tiles/corporation_standard
+sprites/tiles/corporation_standard ; comments with semicolons. subtract 1 from line number for in-program index
 sprites/tiles/dragon_brand_ok
+sprites/tiles/i_dont_even_know_its_3am

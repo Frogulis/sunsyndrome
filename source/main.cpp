@@ -2,17 +2,22 @@
 #include <string>
 
 #include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+
+#include "ImageList.h"
+#include "TopDownDisplay.h"
 
 int main(int argc, char** argv)
 {
-    std::string s = "This is a good ; thing.";
-
-    std::cout << s;
-    return 0;
-
     if (!al_init())
     {
         std::cout << "Failed to start Allegro.";
+        return -1;
+    }
+
+    if (!al_init_image_addon())
+    {
+        std::cout << "Failed to start Allegro Image Addon.\n";
         return -1;
     }
 
@@ -37,6 +42,17 @@ int main(int argc, char** argv)
     }
     al_register_event_source(eq, al_get_keyboard_event_source());
 
+    ImageList il;
+
+    if (!il.loadImagesFromIndexFile("resources/index"))
+    {
+        std::cout << "Failed to load images.\n";
+    }
+
+    TopDownDisplay tdd;
+
+    tdd.setImageList(&il);
+
     while (true)
     {
         while (!al_event_queue_is_empty(eq))
@@ -52,7 +68,9 @@ int main(int argc, char** argv)
                 }
             }
         }
+
         al_clear_to_color(al_map_rgb(255,0,255));
+        tdd.draw();
         al_flip_display();
     }
 }
