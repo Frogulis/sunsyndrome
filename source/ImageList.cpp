@@ -17,6 +17,26 @@ ImageList::~ImageList()
 
 bool ImageList::loadImagesFromIndexFile(std::string filename)
 {
+    std::ifstream index;
+    index.open(filename);
+    if (!index.is_open())
+    {
+        std::cout << "Index not openable at " << filename << "\n";
+        return false;
+    }
+    while (!index.eof())
+    {
+        char imagename[256];
+        index.getline(imagename, 256);
+        std::ifstream f;
+        f.open(imagename);
+        if(!f.open())
+        {
+            std::cout << "File: " << imagename << " not openable.\n";
+            return false;
+        }
+        //load the image
+    }
     return true;
 }
 
