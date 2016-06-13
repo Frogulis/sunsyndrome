@@ -4,12 +4,13 @@
 	<fstream>
 	<allegro5/allegro.h>
 
-1465804354 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+1465815004 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
 	"ImageList.h"
 
-1465803491 d:\code projects\cpp\sunsyndrome\source\imagelist.h
+1465812943 d:\code projects\cpp\sunsyndrome\source\imagelist.h
 	<string>
 	<fstream>
+	<iostream>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 

@@ -1,9 +1,14 @@
 #include <iostream>
+#include <string>
 
 #include <allegro5/allegro.h>
 
 int main(int argc, char** argv)
 {
+    std::string s = "This is a good ; thing.";
+
+    std::cout << s;
+    return 0;
 
     if (!al_init())
     {

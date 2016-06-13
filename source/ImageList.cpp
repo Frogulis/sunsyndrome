@@ -26,16 +26,14 @@ bool ImageList::loadImagesFromIndexFile(std::string filename)
     }
     while (!index.eof())
     {
-        char imagename[256];
-        index.getline(imagename, 256);
-        std::ifstream f;
-        f.open(imagename);
-        if(!f.open())
+        std::string imagename;
+        std::getline(index, imagename);
+        imagename = imagename.substr(0, imagename.find(';'));
+        while (imagename[imagename.length()-1] == ' ')
         {
-            std::cout << "File: " << imagename << " not openable.\n";
-            return false;
+            imagename.pop_back();
         }
-        //load the image
+        // load the image. need to get length of array from file length in lines
     }
     return true;
 }
