@@ -60,6 +60,7 @@ int main(int argc, char** argv)
     IDisplay* my_drawer = new TopDownDisplay;
     my_drawer->setImageList(&il);
 
+    bool ready_to_draw = false;
     al_start_timer(fps_timer);
 
     while (true)
@@ -70,9 +71,7 @@ int main(int argc, char** argv)
             al_get_next_event(eq, &ev);
             if (ev.type == ALLEGRO_EVENT_TIMER)
             {
-                al_clear_to_color(al_map_rgb(255,255,0));
-                my_drawer->draw();
-                al_flip_display();
+                ready_to_draw = true;
             }
             else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
@@ -86,6 +85,13 @@ int main(int argc, char** argv)
                     return 0;
                 }
             }
+        }
+        if (ready_to_draw)
+        {
+            al_clear_to_color(al_map_rgb(255,255,0));
+            my_drawer->draw();
+            al_flip_display();
+            ready_to_draw = false;
         }
     }
 }
