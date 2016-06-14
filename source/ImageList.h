@@ -3,6 +3,9 @@
 
 #include <string>
 
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
+
 class ImageList
 {
     /**
@@ -19,9 +22,12 @@ public:
 
     bool loadImagesFromIndexFile(std::string filename);
 
+    int getLength();
     ALLEGRO_BITMAP* getImageFromID(int ID);
 private:
+    ~ImageList();
     ALLEGRO_BITMAP** image_array;
+    int length;
 };
 
 #endif // __IMAGELISTH_GUARD
