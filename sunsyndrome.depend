@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1465838475 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1465888746 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
+	"IDisplay.h"
 	"TopDownDisplay.h"
 
 1465836925 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
@@ -20,7 +21,7 @@
 
 1465656819 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 
-1465838048 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
+1465838514 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
 	"TopDownDisplay.h"
 	<iostream>
 

@@ -5,6 +5,7 @@
 #include <allegro5/allegro_image.h>
 
 #include "ImageList.h"
+#include "IDisplay.h"
 #include "TopDownDisplay.h"
 
 int main(int argc, char** argv)
@@ -35,6 +36,13 @@ int main(int argc, char** argv)
         return -1;
     }
 
+    ALLEGRO_TIMER* fps_timer = al_create_timer(1.0 / 60);
+    if (!fps_timer)
+    {
+        std::cout << "Failed to create timer.";
+    }
+    al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+
     if (!al_install_keyboard())
     {
         std::cout << "Failed to install keyboard.";
@@ -49,9 +57,10 @@ int main(int argc, char** argv)
         std::cout << "Failed to load images.\n";
     }
 
-    TopDownDisplay tdd;
+    IDisplay* my_drawer = new TopDownDisplay;
+    my_drawer->setImageList(&il);
 
-    tdd.setImageList(&il);
+    al_start_timer(fps_timer);
 
     while (true)
     {
@@ -59,18 +68,24 @@ int main(int argc, char** argv)
         {
             ALLEGRO_EVENT ev;
             al_get_next_event(eq, &ev);
-            if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+            if (ev.type == ALLEGRO_EVENT_TIMER)
+            {
+                al_clear_to_color(al_map_rgb(255,255,0));
+                my_drawer->draw();
+                al_flip_display();
+            }
+            else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
                 if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
                 {
                     std::cout << "Safely quitting.";
+                    al_destroy_display(main_window);
+                    al_destroy_event_queue(eq);
+                    al_destroy_timer(fps_timer);
+                    delete my_drawer;
                     return 0;
                 }
             }
         }
-
-        al_clear_to_color(al_map_rgb(255,0,255));
-        tdd.draw();
-        al_flip_display();
     }
 }
