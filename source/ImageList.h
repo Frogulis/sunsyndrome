@@ -2,6 +2,9 @@
 #define __IMAGELISTH_GUARD
 
 #include <string>
+#include <fstream>
+#include <iostream>
+#include <algorithm>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -19,13 +22,13 @@ class ImageList
     **/
 public:
     ImageList();
+    ~ImageList();
 
     bool loadImagesFromIndexFile(std::string filename);
 
     int getLength();
     ALLEGRO_BITMAP* getImageFromID(int ID);
 private:
-    ~ImageList();
     ALLEGRO_BITMAP** image_array;
     int length;
 };
