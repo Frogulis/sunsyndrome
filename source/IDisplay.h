@@ -19,7 +19,6 @@ public:
         //
     }
     virtual void draw() =0; //this should take the 3D space object
-    virtual void setImageList(ImageList* il) =0;
     virtual void setSpace(Space* space) =0;
 };
 

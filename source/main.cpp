@@ -6,7 +6,8 @@
 
 #include "ImageList.h"
 #include "IDisplay.h"
-#include "TopDownDisplay.h"
+#include "IsometricDisplay.h"
+#include "Space.h"
 
 int main(int argc, char** argv)
 {
@@ -50,15 +51,22 @@ int main(int argc, char** argv)
     }
     al_register_event_source(eq, al_get_keyboard_event_source());
 
-    ImageList il;
+    ImageList tiles;
 
-    if (!il.loadImagesFromIndexFile("resources/index"))
+    if (!tiles.loadImagesFromIndexFile("resources/sprites/tiles"))
     {
         std::cout << "Failed to load images.\n";
+        return -1;
     }
 
-    IDisplay* my_drawer = new TopDownDisplay;
-    my_drawer->setImageList(&il);
+    IDisplay* my_drawer = new IsometricDisplay;
+
+    Space level;
+
+    level.setImageList(&tiles);
+    level.loadFromFile("doesntmatter");
+
+    my_drawer->setSpace(&level);
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);

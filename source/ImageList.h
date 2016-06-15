@@ -13,12 +13,7 @@ class ImageList
 {
     /**
     ImageList
-    Holds and manages an array of all the bitmaps in the game.
-    This is relatively memory-intensive but perfectly
-    acceptable in an absolute sense.
-    Requires a index to specify which textures to use,
-    in the format:
-    filename.jpg ; comments here
+
     **/
 public:
     ImageList();

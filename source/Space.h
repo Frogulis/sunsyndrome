@@ -7,6 +7,7 @@ class ImageList;
 
 #include <allegro5/allegro.h>
 
+#include "ImageList.h"
 
 class Space
 {
@@ -20,12 +21,14 @@ public:
     int getDepth();
     int getHeight();
 
-    int getIDFromLocation(int w, int d, int h);
-    ALLEGRO_BITMAP* getImageOfType(int type);
+    ALLEGRO_BITMAP* getImageFromLocation(int w, int d, int h);
 
 private:
     int*** id_array;
-    ImageList* il;
+    int w;
+    int d;
+    int h;
+    ImageList* image_list;
 };
 
 #endif // __SPACEH_GUARD

@@ -18,10 +18,10 @@ ImageList::~ImageList()
 bool ImageList::loadImagesFromIndexFile(std::string filename)
 {
     std::ifstream index;
-    index.open(filename);
+    index.open(filename + "/index");
     if (!index.is_open())
     {
-        std::cout << "Index not openable at " << filename << "\n";
+        std::cout << "Index not openable at " << filename + "/index"<< "\n";
         return false;
     }
 
@@ -48,7 +48,7 @@ bool ImageList::loadImagesFromIndexFile(std::string filename)
             continue; //don't want to do anything more with this line so i just abandon it
         }
         imagename.append(".png");
-        imagename.insert(0, "resources/");
+        imagename.insert(0, filename + "/");
         std::cout << "Loading:-" << imagename << "-\n";
         ALLEGRO_BITMAP* temp_bmp = al_load_bitmap(imagename.c_str());
         if (!temp_bmp)
