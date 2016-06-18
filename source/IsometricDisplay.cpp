@@ -18,8 +18,11 @@ void IsometricDisplay::draw()
         {
             for (int cd = 0; cd < d; cd++)
             {
-                al_draw_bitmap(space->getImageFromLocation(cw,cd,ch),
-                               200 + 32.0 * (cw - cd), 200 + 16.0 * (cw + cd) + 18.0 * ch, 0);
+                ALLEGRO_BITMAP* cur = space->getImageFromLocation(cw,cd,ch);
+                if (cur)
+                {
+                    al_draw_bitmap(cur, 200 + 32.0 * (cw - cd), 200 + 16.0 * (cw + cd) + 18.0 * ch, 0);
+                }
             }
         }
     }

@@ -40,6 +40,8 @@
 		<Unit filename="source/IDisplay.h" />
 		<Unit filename="source/ImageList.cpp" />
 		<Unit filename="source/ImageList.h" />
+		<Unit filename="source/IsometricDisplay.cpp" />
+		<Unit filename="source/IsometricDisplay.h" />
 		<Unit filename="source/Space.cpp" />
 		<Unit filename="source/Space.h" />
 		<Unit filename="source/TopDownDisplay.cpp" />
