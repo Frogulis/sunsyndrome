@@ -1,31 +1,34 @@
 # depslib dependency file v1.0
-<<<<<<< HEAD
-1466309761 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
-=======
+33292676 פקü
+
 1465888746 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
->>>>>>> master
+
+1465739134 ter
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"IDisplay.h"
-<<<<<<< HEAD
+	<string>
+	<fstream>
+	<iostream>
+	<algorithm>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"ImageList.h"
+	"Space.h"
+
+1465838377 D
 	"IsometricDisplay.h"
 	"Space.h"
 
-1466000422 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+1466313185 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
 	"ImageList.h"
 
-1465999020 d:\code projects\cpp\sunsyndrome\source\imagelist.h
-=======
-	"TopDownDisplay.h"
-
-1465836925 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
-	"ImageList.h"
-
-1465836418 d:\code projects\cpp\sunsyndrome\source\imagelist.h
->>>>>>> master
+1466313185 d:\code projects\cpp\sunsyndrome\source\imagelist.h
 	<string>
 	<fstream>
 	<iostream>
@@ -36,7 +39,6 @@
 1466308663 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
-<<<<<<< HEAD
 1465914072 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
 	"TopDownDisplay.h"
 	<iostream>
@@ -44,24 +46,13 @@
 1465914072 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
 	"IDisplay.h"
 
-1465998832 d:\code projects\cpp\sunsyndrome\source\idisplay.h
-=======
-1465838514 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
-	"TopDownDisplay.h"
-	<iostream>
-
-1465838375 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
-	"IDisplay.h"
-
-1465838377 d:\code projects\cpp\sunsyndrome\source\idisplay.h
->>>>>>> master
+1466313355 d:\code projects\cpp\sunsyndrome\source\idisplay.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"Space.h"
 
-<<<<<<< HEAD
-1466000469 d:\code projects\cpp\sunsyndrome\source\space.h
+1466313185 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
 	"ImageList.h"
@@ -73,9 +64,6 @@
 	<iostream>
 	"IDisplay.h"
 	"Space.h"
-=======
-1465739134 d:\code projects\cpp\sunsyndrome\source\space.h
-	<string>
-	<allegro5/allegro.h>
->>>>>>> master
+
+1466001505 
 
