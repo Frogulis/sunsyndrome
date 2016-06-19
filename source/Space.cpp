@@ -61,7 +61,6 @@ bool Space::loadFromFile(std::string filename)
         {
             cw = 0;
             cd += 1;
-            std::cout << "\n";
         }
         else if (c == '-')
         {
@@ -74,28 +73,28 @@ bool Space::loadFromFile(std::string filename)
             this->id_array[cw][cd][ch] = current_number;
             cw += 1;
             current_number = 0;
-            std::cout << "add one...";
         }
         else if (c >= '0' && c <= '9')
         {
             current_number *= 10; //shift one digit to left
             current_number += c - '0'; //add the int value of digit
-            std::cout << "-*" << int(c) < "\n";
+            //std::cout << "-*" << int(current_number) < "\n";
         }
     }
     std::cout << "Successfully loaded from " << filename << "\n";
-    for (int i = 0; i < mh; i++)
+    /*for (int i = 0; i < mh; i++)
     {
         for (int j = 0; j < mw; j++)
         {
             for (int k = 0; k < md; k++)
             {
-                std::cout << this->id_array[i][j][k] << " ";
+                std::cout << this->id_array[j][k][i] << " ";
             }
+            std::cout << "\n";
         }
-        std::cout << "\n";
-    }
-    return 0;
+        std::cout << "\\\n";
+    }*/
+    return true;
 }
 
 void Space::setImageList(ImageList* il)

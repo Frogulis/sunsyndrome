@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1466261067 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1466309761 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
@@ -20,7 +20,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1466265724 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
+1466308663 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
 1465914072 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp

@@ -64,7 +64,12 @@ int main(int argc, char** argv)
     Space level;
 
     level.setImageList(&tiles);
-    level.loadFromFile("resources/levels/test");
+
+    if (!level.loadFromFile("resources/levels/practice"))
+    {
+        std::cout << "Failed to load level;";
+        return -1;
+    }
 
     my_drawer->setSpace(&level);
 
