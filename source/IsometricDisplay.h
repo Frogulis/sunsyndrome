@@ -12,9 +12,11 @@ public:
     IsometricDisplay();
     void draw();
     void setSpace(Space* space);
+    void changeOffset(float x, float y);
 private:
     ImageList* image_list;
     Space* space;
+    float x, y;
 };
 
 #endif // __ISOMETRICDISPLAYH_GUARD

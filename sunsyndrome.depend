@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1466313185 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1466317816 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
@@ -33,7 +33,7 @@
 	"IsometricDisplay.h"
 	"Space.h"
 
-1466313185 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+1466317498 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
 	"ImageList.h"
 
 1466313185 d:\code projects\cpp\sunsyndrome\source\imagelist.h
@@ -54,7 +54,7 @@
 1465914072 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
 	"IDisplay.h"
 
-1466313355 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+1466317112 d:\code projects\cpp\sunsyndrome\source\idisplay.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
@@ -65,10 +65,10 @@
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1466313185 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1466316954 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1466313185 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1466316863 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	"IDisplay.h"
 	"Space.h"
