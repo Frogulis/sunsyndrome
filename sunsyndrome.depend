@@ -1,11 +1,16 @@
 # depslib dependency file v1.0
+<<<<<<< HEAD
 1466309761 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+=======
+1465888746 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+>>>>>>> master
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"IDisplay.h"
+<<<<<<< HEAD
 	"IsometricDisplay.h"
 	"Space.h"
 
@@ -13,6 +18,14 @@
 	"ImageList.h"
 
 1465999020 d:\code projects\cpp\sunsyndrome\source\imagelist.h
+=======
+	"TopDownDisplay.h"
+
+1465836925 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+	"ImageList.h"
+
+1465836418 d:\code projects\cpp\sunsyndrome\source\imagelist.h
+>>>>>>> master
 	<string>
 	<fstream>
 	<iostream>
@@ -23,6 +36,7 @@
 1466308663 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
+<<<<<<< HEAD
 1465914072 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
 	"TopDownDisplay.h"
 	<iostream>
@@ -31,11 +45,22 @@
 	"IDisplay.h"
 
 1465998832 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+=======
+1465838514 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
+	"TopDownDisplay.h"
+	<iostream>
+
+1465838375 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
+	"IDisplay.h"
+
+1465838377 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+>>>>>>> master
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"Space.h"
 
+<<<<<<< HEAD
 1466000469 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
@@ -48,4 +73,9 @@
 	<iostream>
 	"IDisplay.h"
 	"Space.h"
+=======
+1465739134 d:\code projects\cpp\sunsyndrome\source\space.h
+	<string>
+	<allegro5/allegro.h>
+>>>>>>> master
 
