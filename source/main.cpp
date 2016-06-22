@@ -119,6 +119,7 @@ int main(int argc, char** argv)
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             my_drawer->draw();
+            al_draw_pixel(200, 200, al_map_rgba(255,0,0,128));
             al_flip_display();
             ready_to_draw = false;
         }
