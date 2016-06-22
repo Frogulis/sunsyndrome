@@ -53,7 +53,7 @@ int main(int argc, char** argv)
 
     ImageList tiles;
 
-    if (!tiles.loadImagesFromIndexFile("resources/sprites/tiles"))
+    if (!tiles.loadImagesFromIndexFile("resources/levels/practice"))
     {
         std::cout << "Failed to load images.\n";
         return -1;
@@ -97,11 +97,27 @@ int main(int argc, char** argv)
                     delete my_drawer;
                     return 0;
                 }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_UP)
+                {
+                    my_drawer->changeOffset(0, -20);
+                }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_DOWN)
+                {
+                    my_drawer->changeOffset(0, 20);
+                }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_LEFT)
+                {
+                    my_drawer->changeOffset(-20, 0);
+                }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_RIGHT)
+                {
+                    my_drawer->changeOffset(20, 0);
+                }
             }
         }
         if (ready_to_draw)
         {
-            al_clear_to_color(al_map_rgb(255,255,0));
+            al_clear_to_color(al_map_rgb(0, 0, 0));
             my_drawer->draw();
             al_flip_display();
             ready_to_draw = false;

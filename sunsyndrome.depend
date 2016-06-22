@@ -1,5 +1,7 @@
 # depslib dependency file v1.0
-1466309761 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+33292676 פקü
+
+1466317816 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
@@ -9,10 +11,32 @@
 	"IsometricDisplay.h"
 	"Space.h"
 
-1466000422 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
+1465739134 ter
+	<iostream>
+	<string>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"ImageList.h"
+	"IDisplay.h"
+	<string>
+	<fstream>
+	<iostream>
+	<algorithm>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"ImageList.h"
+	"Space.h"
+
+1465838377 D
+	"IsometricDisplay.h"
+	"Space.h"
+
+1466317498 source:d:\code projects\cpp\sunsyndrome\source\imagelist.cpp
 	"ImageList.h"
 
-1465999020 d:\code projects\cpp\sunsyndrome\source\imagelist.h
+1466313185 d:\code projects\cpp\sunsyndrome\source\imagelist.h
 	<string>
 	<fstream>
 	<iostream>
@@ -20,7 +44,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1466308663 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
+1466313185 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
 1465914072 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
@@ -30,22 +54,24 @@
 1465914072 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
 	"IDisplay.h"
 
-1465998832 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+1466317112 d:\code projects\cpp\sunsyndrome\source\idisplay.h
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"Space.h"
 
-1466000469 d:\code projects\cpp\sunsyndrome\source\space.h
+1466313185 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1466262461 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1466316954 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1466001505 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1466316863 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	"IDisplay.h"
 	"Space.h"
+
+1466001505 
 
