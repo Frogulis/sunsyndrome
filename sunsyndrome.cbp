@@ -37,6 +37,10 @@
 			<Add library="allegro" />
 			<Add library="allegro_image" />
 		</Linker>
+		<Unit filename="source/Actor.cpp" />
+		<Unit filename="source/Actor.h" />
+		<Unit filename="source/HashTable.cpp" />
+		<Unit filename="source/HashTable.h" />
 		<Unit filename="source/IDisplay.h" />
 		<Unit filename="source/ImageList.cpp" />
 		<Unit filename="source/ImageList.h" />
