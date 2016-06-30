@@ -1,15 +1,18 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1466594434 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1467040648 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
+	<functional>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"ImageList.h"
 	"IDisplay.h"
 	"IsometricDisplay.h"
 	"Space.h"
+	"Actor.h"
+	"HashTable.h"
 
 1465739134 ter
 	<iostream>
@@ -74,4 +77,22 @@
 	"Space.h"
 
 1466001505 
+
+1467041388 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+	"Actor.h"
+
+1467039108 d:\code projects\cpp\sunsyndrome\source\actor.h
+	<exception>
+	<iostream>
+	<string>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	"HashTable.h"
+
+1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
+	"HashTable.h"
+
+1467041601 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+	<functional>
+	<iostream>
 

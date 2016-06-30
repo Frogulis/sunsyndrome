@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <functional>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -8,6 +9,8 @@
 #include "IDisplay.h"
 #include "IsometricDisplay.h"
 #include "Space.h"
+#include "Actor.h"
+#include "HashTable.h"
 
 int main(int argc, char** argv)
 {
