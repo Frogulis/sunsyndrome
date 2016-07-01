@@ -4,22 +4,24 @@
 #include <exception>
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
 #include "HashTable.h"
-
-class Animation;
+#include "StringUtils.h"
 
 class Actor
 {
 public:
     Actor();
+    bool loadByName(std::string actor_name);
     ALLEGRO_BITMAP* getFrame();
     float getYOffset();
     float getXOffset();
 private:
+    class Animation;
     JH::HashTable<std::string, Animation*> animations; //hash table of 'animation' objects
     Animation* cur_animation;
     float x_off, y_off;

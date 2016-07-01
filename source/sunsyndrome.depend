@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1467040648 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1467375811 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -13,6 +13,7 @@
 	"Space.h"
 	"Actor.h"
 	"HashTable.h"
+	"DialogueBox.h"
 
 1465739134 ter
 	<iostream>
@@ -78,21 +79,42 @@
 
 1466001505 
 
-1467041388 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+1467375265 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
 	"Actor.h"
 
-1467039108 d:\code projects\cpp\sunsyndrome\source\actor.h
+1467370398 d:\code projects\cpp\sunsyndrome\source\actor.h
 	<exception>
 	<iostream>
 	<string>
+	<fstream>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"HashTable.h"
+	"StringUtils.h"
 
 1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
 	"HashTable.h"
 
-1467041601 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+1467359037 d:\code projects\cpp\sunsyndrome\source\hashtable.h
 	<functional>
 	<iostream>
+
+1467375269 d:\code projects\cpp\sunsyndrome\source\stringutils.h
+	<string>
+
+1467376352 source:d:\code projects\cpp\sunsyndrome\source\dialoguebox.cpp
+	"DialogueBox.h"
+
+1467375415 d:\code projects\cpp\sunsyndrome\source\dialoguebox.h
+	<iostream>
+	<string>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
+	<allegro5/allegro_font.h>
+
+1467375094 source:d:\code projects\cpp\sunsyndrome\source\menudisplay.cpp
+	"MenuDisplay.h"
+
+1467375157 d:\code projects\cpp\sunsyndrome\source\menudisplay.h
+	"IDisplay.h"
 
