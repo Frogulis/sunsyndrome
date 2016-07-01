@@ -1,6 +1,6 @@
 #include "Actor.h"
 
-class Animation
+class Actor::Animation
 {
 public:
     Animation()
@@ -48,6 +48,29 @@ Actor::Actor()
     this->cur_animation = nullptr;
     this->x_off = 0;
     this->y_off = 0;
+}
+
+bool Actor::loadByName(std::string actor_name)
+{
+    ALLEGRO_BITMAP* sheet = nullptr; //the overall image from which we'll chop frames
+    sheet = al_load_bitmap(("resources/sprites/actor/" + actor_name + "/spritesheet.png").c_str());
+    if (!sheet)
+    {
+        return false;
+    }
+
+    std::ifstream ssinfo;
+    ssinfo.open("resources/sprites/actor/" + actor_name + "/ssinfo");
+    if (!ssinfo.is_open())
+    {
+        return false;
+    }
+    std::string sizes = "";
+    std::getline(ssinfo, sizes);
+    int x_size = JH::StringUtils::stringToInt(sizes.substr(0, sizes.find(',')));
+    int y_size = JH::StringUtils::stringToInt(sizes.substr(sizes.find(','), sizes.length()));
+    std::cout << x_size << " " << y_size;
+    return true;
 }
 
 ALLEGRO_BITMAP* Actor::getFrame()

@@ -11,6 +11,8 @@
 #include "Space.h"
 #include "Actor.h"
 #include "HashTable.h"
+#include "DialogueBox.h"
+//#include "StringUtils.h"
 
 int main(int argc, char** argv)
 {
@@ -76,6 +78,13 @@ int main(int argc, char** argv)
 
     my_drawer->setSpace(&level);
 
+    DialogueBox box;
+    if (!box.load("plain_white"))
+    {
+        std::cout << "Failed to load the box\n";
+    }
+    box.setDimensions(400, 400);
+
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
 
@@ -122,7 +131,10 @@ int main(int argc, char** argv)
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             my_drawer->draw();
-            al_draw_pixel(200, 200, al_map_rgba(255,0,0,128));
+            ALLEGRO_BITMAP* b = box.getBoxBitmap();
+            al_set_target_backbuffer(main_window);
+            al_draw_bitmap(b, 50, 50, 0);
+            al_destroy_bitmap(b);
             al_flip_display();
             ready_to_draw = false;
         }
