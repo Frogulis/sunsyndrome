@@ -8,6 +8,7 @@
 		<Build>
 			<Target title="Debug">
 				<Option output="bin/Debug/sunsyndrome" prefix_auto="1" extension_auto="1" />
+				<Option working_dir=".." />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -23,6 +24,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -37,20 +39,24 @@
 			<Add library="allegro" />
 			<Add library="allegro_image" />
 		</Linker>
-		<Unit filename="source/Actor.cpp" />
-		<Unit filename="source/Actor.h" />
-		<Unit filename="source/HashTable.h" />
-		<Unit filename="source/IDisplay.h" />
-		<Unit filename="source/ImageList.cpp" />
-		<Unit filename="source/ImageList.h" />
-		<Unit filename="source/IsometricDisplay.cpp" />
-		<Unit filename="source/IsometricDisplay.h" />
-		<Unit filename="source/Space.cpp" />
-		<Unit filename="source/Space.h" />
-		<Unit filename="source/StringUtils.h" />
-		<Unit filename="source/TopDownDisplay.cpp" />
-		<Unit filename="source/TopDownDisplay.h" />
-		<Unit filename="source/main.cpp" />
+		<Unit filename="Actor.cpp" />
+		<Unit filename="Actor.h" />
+		<Unit filename="DialogueBox.cpp" />
+		<Unit filename="DialogueBox.h" />
+		<Unit filename="HashTable.h" />
+		<Unit filename="IDisplay.h" />
+		<Unit filename="ImageList.cpp" />
+		<Unit filename="ImageList.h" />
+		<Unit filename="IsometricDisplay.cpp" />
+		<Unit filename="IsometricDisplay.h" />
+		<Unit filename="MenuDisplay.cpp" />
+		<Unit filename="MenuDisplay.h" />
+		<Unit filename="Space.cpp" />
+		<Unit filename="Space.h" />
+		<Unit filename="StringUtils.h" />
+		<Unit filename="TopDownDisplay.cpp" />
+		<Unit filename="TopDownDisplay.h" />
+		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
