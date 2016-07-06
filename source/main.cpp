@@ -31,13 +31,6 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    Actor a;
-    if (!a.loadByName("shadowman"))
-    {
-        std::cout << "can't loadl ol";
-    }
-    a.startAnimation("idle");
-
     if (!al_init_primitives_addon())
     {
         std::cout << "Failed to start Allegro Primitives Addon.\n";
@@ -106,13 +99,19 @@ int main(int argc, char** argv)
 
     my_drawer->setSpace(&level);
 
-    DialogueBox box;
-    if (!box.load("plain_white"))
+    Actor a;
+    if (!a.loadByName("shadowman"))
     {
-        std::cout << "Failed to load the box\n";
+        std::cout << "can't load shadowman";
     }
-    float box_x = 20, box_y = 20;
-    box.setDimensions(box_x, box_y);
+    a.startAnimation("idle");
+
+    Actor t;
+    if (!t.loadByName("terminal"))
+    {
+        std::cout << "can't load terminal sprites";
+    }
+    t.startAnimation("idle");
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
@@ -140,19 +139,19 @@ int main(int argc, char** argv)
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_UP)
                 {
-                    box_y -= 20;
+                    my_drawer->changeOffset(0, -100);
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_DOWN)
                 {
-                    box_y += 20;
+                    my_drawer->changeOffset(0, 100);
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_LEFT)
                 {
-                    box_x -= 20;
+                    my_drawer->changeOffset(-100, 0);
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_RIGHT)
                 {
-                    box_x += 20;
+                    my_drawer->changeOffset(100, 0);
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_Z)
                 {
@@ -168,11 +167,8 @@ int main(int argc, char** argv)
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             my_drawer->draw();
-            box.setDimensions(box_x, box_y);
-            ALLEGRO_BITMAP* b = box.getBoxBitmap();
-            al_draw_bitmap(b, 50, 50, 0);
-            al_destroy_bitmap(b);
             al_draw_bitmap(a.getFrame(), 200, 200, 0);
+            al_draw_bitmap(t.getFrame(), 250, 250, 0);
             al_flip_display();
             ready_to_draw = false;
         }
