@@ -5,11 +5,15 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <sstream>
+#include <vector>
+#include <queue>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
 #include "HashTable.h"
+#include "SSInfoTokenizer.h"
 #include "StringUtils.h"
 
 class Actor
@@ -17,6 +21,7 @@ class Actor
 public:
     Actor();
     bool loadByName(std::string actor_name);
+    void startAnimation(std::string anim_name);
     ALLEGRO_BITMAP* getFrame();
     float getYOffset();
     float getXOffset();

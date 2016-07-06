@@ -7,6 +7,8 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_ttf.h>
 
 class DialogueBox
 {
@@ -19,6 +21,7 @@ public:
 private:
     ALLEGRO_BITMAP* tiles[9];
     std::string text;
+    ALLEGRO_FONT* font;
     float tile_size;
     float x, y;
 };

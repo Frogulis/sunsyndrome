@@ -1,12 +1,15 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1467375811 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1467786856 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_font.h>
+	<allegro5/allegro_ttf.h>
 	"ImageList.h"
 	"IDisplay.h"
 	"IsometricDisplay.h"
@@ -14,6 +17,7 @@
 	"Actor.h"
 	"HashTable.h"
 	"DialogueBox.h"
+	"StringUtils.h"
 
 1465739134 ter
 	<iostream>
@@ -79,42 +83,71 @@
 
 1466001505 
 
-1467375265 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+1467786805 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
 	"Actor.h"
 
-1467370398 d:\code projects\cpp\sunsyndrome\source\actor.h
+1467785483 d:\code projects\cpp\sunsyndrome\source\actor.h
 	<exception>
 	<iostream>
 	<string>
 	<fstream>
+	<sstream>
+	<vector>
+	<queue>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"HashTable.h"
+	"SSInfoTokenizer.h"
 	"StringUtils.h"
 
 1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
 	"HashTable.h"
 
-1467359037 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+1467544773 d:\code projects\cpp\sunsyndrome\source\hashtable.h
 	<functional>
 	<iostream>
+	"JHException.h"
 
-1467375269 d:\code projects\cpp\sunsyndrome\source\stringutils.h
+1467464331 d:\code projects\cpp\sunsyndrome\source\stringutils.h
 	<string>
 
-1467376352 source:d:\code projects\cpp\sunsyndrome\source\dialoguebox.cpp
+1467460695 source:d:\code projects\cpp\sunsyndrome\source\dialoguebox.cpp
 	"DialogueBox.h"
 
-1467375415 d:\code projects\cpp\sunsyndrome\source\dialoguebox.h
+1467460695 d:\code projects\cpp\sunsyndrome\source\dialoguebox.h
 	<iostream>
 	<string>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_font.h>
+	<allegro5/allegro_primitives.h>
+	<allegro5/allegro_ttf.h>
 
 1467375094 source:d:\code projects\cpp\sunsyndrome\source\menudisplay.cpp
 	"MenuDisplay.h"
 
-1467375157 d:\code projects\cpp\sunsyndrome\source\menudisplay.h
+1467460968 d:\code projects\cpp\sunsyndrome\source\menudisplay.h
+	<string>
+	<vector>
 	"IDisplay.h"
+
+1467544746 d:\code projects\cpp\sunsyndrome\source\jhexception.h
+
+1467732050 source:d:\code projects\cpp\sunsyndrome\source\ssinfotokenizer.cpp
+	"SSInfoTokenizer.h"
+
+1467717666 d:\code projects\cpp\sunsyndrome\source\ssinfotokenizer.h
+	<sstream>
+	"Tokenizer.h"
+	"StringUtils.h"
+
+1467718887 d:\code projects\cpp\sunsyndrome\source\tokenizer.h
+	<string>
+	<sstream>
+	<vector>
+	<fstream>
+	"JHException.h"
+
+1467717312 source:d:\code projects\cpp\sunsyndrome\source\tokenizer.cpp
+	"Tokenizer.h"
 

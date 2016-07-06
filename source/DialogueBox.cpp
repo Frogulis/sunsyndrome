@@ -3,6 +3,11 @@
 DialogueBox::DialogueBox()
 {
     this->tile_size = 10;
+    this->font = al_load_ttf_font("resources/fonts/MontereyMediumFLF.ttf", 16, 0);
+    if (!this->font)
+    {
+        std::cout << "Failed to load font.\n";
+    }
 }
 
 
@@ -33,10 +38,19 @@ bool DialogueBox::load(std::string boxname)
     return true;
 }
 
+void DialogueBox::setText(std::string text)
+{
+    this->text = text;
+}
+
 ALLEGRO_BITMAP* DialogueBox::getBoxBitmap()
 {
+    ALLEGRO_BITMAP* display = al_get_target_bitmap();
+
     ALLEGRO_BITMAP* result = al_create_bitmap(this->x + this->tile_size, this->y + this->tile_size);
     al_set_target_bitmap(result);
+
+    al_draw_filled_rectangle(5, 5, x+5, y+5, al_map_rgba(255,255,255,255));
 
     for (int w = 10; w < this->x - this->tile_size/2; w += 10)
     {
@@ -53,7 +67,15 @@ ALLEGRO_BITMAP* DialogueBox::getBoxBitmap()
     al_draw_bitmap(this->tiles[6], 0, this->y, 0);
     al_draw_bitmap(this->tiles[8], this->x, this->y, 0);
 
+    const char* s = "This is all that remains.\0";
+
+    float width = al_get_text_width(this->font, s);
+
+    al_draw_text(this->font, al_map_rgb(0,0,0), (this->x - width)/2, (this->y - 8)/2, 0, s);
+
+    al_set_target_bitmap(display);
 
     return result;
 }
+
 

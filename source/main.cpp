@@ -4,6 +4,9 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "ImageList.h"
 #include "IDisplay.h"
@@ -12,7 +15,7 @@
 #include "Actor.h"
 #include "HashTable.h"
 #include "DialogueBox.h"
-//#include "StringUtils.h"
+#include "StringUtils.h"
 
 int main(int argc, char** argv)
 {
@@ -25,6 +28,31 @@ int main(int argc, char** argv)
     if (!al_init_image_addon())
     {
         std::cout << "Failed to start Allegro Image Addon.\n";
+        return -1;
+    }
+
+    Actor a;
+    if (!a.loadByName("shadowman"))
+    {
+        std::cout << "can't loadl ol";
+    }
+    a.startAnimation("idle");
+
+    if (!al_init_primitives_addon())
+    {
+        std::cout << "Failed to start Allegro Primitives Addon.\n";
+        return -1;
+    }
+
+    if (!al_init_font_addon())
+    {
+        std::cout << "Failed to start Allegro Font Addon.\n";
+        return -1;
+    }
+
+    if (!al_init_ttf_addon())
+    {
+        std::cout << "Failed to start Allegro TTF Addon.\n";
         return -1;
     }
 
@@ -83,7 +111,8 @@ int main(int argc, char** argv)
     {
         std::cout << "Failed to load the box\n";
     }
-    box.setDimensions(400, 400);
+    float box_x = 20, box_y = 20;
+    box.setDimensions(box_x, box_y);
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
@@ -111,19 +140,27 @@ int main(int argc, char** argv)
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_UP)
                 {
-                    my_drawer->changeOffset(0, -20);
+                    box_y -= 20;
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_DOWN)
                 {
-                    my_drawer->changeOffset(0, 20);
+                    box_y += 20;
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_LEFT)
                 {
-                    my_drawer->changeOffset(-20, 0);
+                    box_x -= 20;
                 }
                 else if (ev.keyboard.keycode == ALLEGRO_KEY_RIGHT)
                 {
-                    my_drawer->changeOffset(20, 0);
+                    box_x += 20;
+                }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_Z)
+                {
+                    a.startAnimation("death");
+                }
+                else if (ev.keyboard.keycode == ALLEGRO_KEY_X)
+                {
+                    a.startAnimation("attack");
                 }
             }
         }
@@ -131,10 +168,11 @@ int main(int argc, char** argv)
         {
             al_clear_to_color(al_map_rgb(0, 0, 0));
             my_drawer->draw();
+            box.setDimensions(box_x, box_y);
             ALLEGRO_BITMAP* b = box.getBoxBitmap();
-            al_set_target_backbuffer(main_window);
             al_draw_bitmap(b, 50, 50, 0);
             al_destroy_bitmap(b);
+            al_draw_bitmap(a.getFrame(), 200, 200, 0);
             al_flip_display();
             ready_to_draw = false;
         }

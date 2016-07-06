@@ -14,9 +14,8 @@ namespace JH
         {
             long long int result = 0;
 
-            for (std::string::iterator i = s.end()-1; i >= s.begin(); i--)
+            for (std::string::iterator i = s.begin(); i != s.end(); i++)
             {
-                std::cout << "~" << *i << "\n";
                 if (*i >= '0' && *i <= '9')
                 {
                     result *= 10;

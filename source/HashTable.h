@@ -4,9 +4,11 @@
 #include <functional>
 #include <iostream>
 
+#include "JHException.h"
+
 namespace JH
 {
-    class HashTableException
+    class HashTableException : public JHException
     {
     public:
         HashTableException()
@@ -17,12 +19,6 @@ namespace JH
         {
             this->message += message;
         }
-        std::string what()
-        {
-            return this->message;
-        }
-    protected:
-        std::string message;
     };
 
     class HTElementNotFoundException : public HashTableException
