@@ -12,6 +12,16 @@ class ImageList;
 class Space
 {
 public:
+    struct Tile
+    {
+        Tile()
+        {
+            id = 999;
+            walkable = false;
+        }
+        int id;
+        bool walkable;
+    };
     Space();
 
     bool loadFromFile(std::string filename);
@@ -24,11 +34,11 @@ public:
     ALLEGRO_BITMAP* getImageFromLocation(int w, int d, int h);
 
 private:
-    int*** id_array;
+    Tile*** id_array;
     int w;
     int d;
     int h;
-    ImageList* image_list;
+    ImageList image_list;
 };
 
 #endif // __SPACEH_GUARD

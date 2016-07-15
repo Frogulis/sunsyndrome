@@ -2,6 +2,7 @@
 #define __ISOMETRICDISPLAYH_GUARD
 
 #include <iostream>
+#include <memory>
 
 #include "IDisplay.h"
 #include "Space.h"
@@ -14,8 +15,7 @@ public:
     void setSpace(Space* space);
     void changeOffset(float x, float y);
 private:
-    ImageList* image_list;
-    Space* space;
+    std::shared_ptr<Space> space;
     float x, y;
 };
 

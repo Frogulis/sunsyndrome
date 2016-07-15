@@ -2,8 +2,6 @@
 
 IsometricDisplay::IsometricDisplay()
 {
-    this->image_list = nullptr;
-    this->space = nullptr;
     this->x = 200;
     this->y = 200;
 }
@@ -36,7 +34,7 @@ void IsometricDisplay::draw()
 
 void IsometricDisplay::setSpace(Space* space)
 {
-    this->space = space;
+    this->space.reset(space);
 }
 
 void IsometricDisplay::changeOffset(float x, float y)

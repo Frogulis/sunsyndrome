@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "IDisplay.h"
 
@@ -12,7 +13,10 @@ public:
     MenuDisplay();
     void draw();
 private:
-    //
+    class Structure
+    {
+
+    };
 };
 
 #endif // __MENUDISPLAYH_GUARD
