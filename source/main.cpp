@@ -8,6 +8,7 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 
+#include "Game.h"
 #include "ImageList.h"
 #include "IDisplay.h"
 #include "IsometricDisplay.h"
@@ -77,41 +78,14 @@ int main(int argc, char** argv)
     }
     al_register_event_source(eq, al_get_keyboard_event_source());
 
-    ImageList tiles;
-
-    if (!tiles.loadImagesFromIndexFile("resources/levels/practice"))
+    if (!al_install_mouse())
     {
-        std::cout << "Failed to load images.\n";
+        std::cout << "Failed to install mouse.";
         return -1;
     }
+    al_register_event_source(eq, al_get_mouse_event_source());
 
-    IDisplay* my_drawer = new IsometricDisplay;
-
-    Space level;
-
-    level.setImageList(&tiles);
-
-    if (!level.loadFromFile("resources/levels/practice"))
-    {
-        std::cout << "Failed to load level;";
-        return -1;
-    }
-
-    my_drawer->setSpace(&level);
-
-    Actor a;
-    if (!a.loadByName("shadowman"))
-    {
-        std::cout << "can't load shadowman";
-    }
-    a.startAnimation("idle");
-
-    Actor t;
-    if (!t.loadByName("terminal"))
-    {
-        std::cout << "can't load terminal sprites";
-    }
-    t.startAnimation("idle");
+    Game base;
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
@@ -128,47 +102,21 @@ int main(int argc, char** argv)
             }
             else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
-                if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) //current keyboard input section
                 {
                     std::cout << "Safely quitting.";
                     al_destroy_display(main_window);
                     al_destroy_event_queue(eq);
                     al_destroy_timer(fps_timer);
-                    delete my_drawer;
                     return 0;
                 }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_UP)
-                {
-                    my_drawer->changeOffset(0, -100);
-                }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_DOWN)
-                {
-                    my_drawer->changeOffset(0, 100);
-                }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_LEFT)
-                {
-                    my_drawer->changeOffset(-100, 0);
-                }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_RIGHT)
-                {
-                    my_drawer->changeOffset(100, 0);
-                }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_Z)
-                {
-                    a.startAnimation("death");
-                }
-                else if (ev.keyboard.keycode == ALLEGRO_KEY_X)
-                {
-                    a.startAnimation("attack");
-                }
             }
+            base.runEvents(ev);
         }
         if (ready_to_draw)
         {
-            al_clear_to_color(al_map_rgb(0, 0, 0));
-            my_drawer->draw();
-            al_draw_bitmap(a.getFrame(), 200, 200, 0);
-            al_draw_bitmap(t.getFrame(), 250, 250, 0);
+            base.runLogic();
+            base.runDisplay();
             al_flip_display();
             ready_to_draw = false;
         }

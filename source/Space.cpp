@@ -2,7 +2,6 @@
 
 Space::Space()
 {
-    this->image_list = nullptr;
     this->id_array = nullptr;
     this->w = 0;
     this->d = 0;
@@ -11,6 +10,13 @@ Space::Space()
 
 bool Space::loadFromFile(std::string filename)
 {
+    filename = "resources/levels/" + filename;
+
+    if (!this->image_list.loadImagesFromIndexFile(filename))
+    {
+        return false;
+    }
+
     int mw, md, mh;
 
     filename += "/map";
@@ -24,13 +30,13 @@ bool Space::loadFromFile(std::string filename)
     }
     f >> mw >> md >> mh;
 
-    this->id_array = new int**[mw];
+    this->id_array = new Tile**[mw];
     for (int i = 0; i < mw; i++)
     {
-        this->id_array[i] = new int*[md];
+        this->id_array[i] = new Tile*[md];
         for (int j = 0; j < md; j++)
         {
-            this->id_array[i][j] = new int[mh];
+            this->id_array[i][j] = new Tile[mh];
         }
     }
 
@@ -45,7 +51,7 @@ bool Space::loadFromFile(std::string filename)
 
     f.ignore(256, '\n');
     //f.get(); //discarding the space
-    std::cout << "Starting read.";
+    std::cout << "Starting read of " << filename << ".\n";
 
     while (!f.eof())
     {
@@ -62,7 +68,7 @@ bool Space::loadFromFile(std::string filename)
             cw = 0;
             cd += 1;
         }
-        else if (c == '-')
+        else if (c == '-' || c == '+')
         {
             if (cw >= mw || cd >= md || ch >= mh)
             {
@@ -70,7 +76,11 @@ bool Space::loadFromFile(std::string filename)
                 std::cout << cw << cd << ch;
                 return false;
             }
-            this->id_array[cw][cd][ch] = current_number;
+            this->id_array[cw][cd][ch].id = current_number;
+            if (c == '+')
+            {
+                this->id_array[cw][cd][ch].walkable = true;
+            }
             cw += 1;
             current_number = 0;
         }
@@ -97,18 +107,13 @@ bool Space::loadFromFile(std::string filename)
     return true;
 }
 
-void Space::setImageList(ImageList* il)
-{
-    this->image_list = il;
-}
-
 ALLEGRO_BITMAP* Space::getImageFromLocation(int w, int d, int h)
 {
     if (w >= this->w || d >= this->d || h >= this->h)
     {
         return nullptr;
     }
-    return this->image_list->getImageFromID(this->id_array[w][d][h]);
+    return this->image_list.getImageFromID(this->id_array[w][d][h].id);
 }
 
 int Space::getWidth()

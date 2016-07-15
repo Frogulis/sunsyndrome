@@ -46,6 +46,8 @@
 		<Unit filename="Actor.h" />
 		<Unit filename="DialogueBox.cpp" />
 		<Unit filename="DialogueBox.h" />
+		<Unit filename="Game.cpp" />
+		<Unit filename="Game.h" />
 		<Unit filename="HashTable.h" />
 		<Unit filename="IDisplay.h" />
 		<Unit filename="ImageList.cpp" />
