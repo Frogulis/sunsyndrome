@@ -37,6 +37,11 @@ void IsometricDisplay::setSpace(Space* space)
     this->space.reset(space);
 }
 
+std::shared_ptr<Space> IsometricDisplay::getSpacePtr()
+{
+    return this->space;
+}
+
 void IsometricDisplay::changeOffset(float x, float y)
 {
     this->x += x;

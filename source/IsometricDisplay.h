@@ -13,6 +13,7 @@ public:
     IsometricDisplay();
     void draw();
     void setSpace(Space* space);
+    std::shared_ptr<Space> getSpacePtr();
     void changeOffset(float x, float y);
 private:
     std::shared_ptr<Space> space;

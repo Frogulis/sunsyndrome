@@ -1,8 +1,6 @@
 #ifndef __SPACEH_GUARD
 #define __SPACEH_GUARD
 
-class ImageList;
-
 #include <string>
 
 #include <allegro5/allegro.h>
@@ -32,8 +30,9 @@ public:
     int getHeight();
 
     ALLEGRO_BITMAP* getImageFromLocation(int w, int d, int h);
-
+    bool getWalkableFromLocation(int w, int d, int h);
 private:
+    bool within_array_bounds(int w, int d, int h);
     Tile*** id_array;
     int w;
     int d;

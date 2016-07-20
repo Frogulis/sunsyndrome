@@ -57,6 +57,7 @@
 		<Unit filename="JHException.h" />
 		<Unit filename="MenuDisplay.cpp" />
 		<Unit filename="MenuDisplay.h" />
+		<Unit filename="MenuStructure.h" />
 		<Unit filename="SSInfoTokenizer.cpp" />
 		<Unit filename="SSInfoTokenizer.h" />
 		<Unit filename="Space.cpp" />

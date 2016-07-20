@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1468392602 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1469014612 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -53,7 +53,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1468246784 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
+1468930845 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
 1465914072 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
@@ -69,15 +69,15 @@
 	"ImageList.h"
 	"Space.h"
 
-1468246320 d:\code projects\cpp\sunsyndrome\source\space.h
+1468930845 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1468245906 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1468747640 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1468246751 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1468748106 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	<memory>
 	"IDisplay.h"
@@ -128,9 +128,10 @@
 1467375094 source:d:\code projects\cpp\sunsyndrome\source\menudisplay.cpp
 	"MenuDisplay.h"
 
-1467460968 d:\code projects\cpp\sunsyndrome\source\menudisplay.h
+1468558958 d:\code projects\cpp\sunsyndrome\source\menudisplay.h
 	<string>
 	<vector>
+	<memory>
 	"IDisplay.h"
 
 1467544746 d:\code projects\cpp\sunsyndrome\source\jhexception.h
@@ -153,16 +154,18 @@
 1467717312 source:d:\code projects\cpp\sunsyndrome\source\tokenizer.cpp
 	"Tokenizer.h"
 
-1468394992 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
+1469016206 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
 	"Game.h"
 
-1468394462 d:\code projects\cpp\sunsyndrome\source\game.h
+1469014964 d:\code projects\cpp\sunsyndrome\source\game.h
 	<iostream>
 	<memory>
 	<string>
+	<vector>
 	<allegro5/allegro.h>
 	"Space.h"
 	"IDisplay.h"
 	"IsometricDisplay.h"
 	"MenuDisplay.h"
+	"HashTable.h"
 

@@ -20,6 +20,37 @@
 
 int main(int argc, char** argv)
 {
+    Game::CombatUnit* a = Game::CombatUnit::getInstance("shadowman");
+    Game::CombatUnit* b = Game::CombatUnit::getInstance("grunt");
+
+    class Poison : public Game::CombatUnit::Buff
+    {
+    public:
+        Poison(int length) : Game::CombatUnit::Buff::Buff(length)
+        {
+
+        }
+        void turnEffect(Game::CombatUnit* user)
+        {
+            user->setStat("hp", user->getStat("hp") - 2);
+        }
+    };
+
+    a->applyBuff(new Poison(3));
+
+    while (true)
+    {
+        std::cout << "a: " << a->getStat("hp") << " " << a->getStat("damage") << " " << a->getStat("defence") << "\n";
+        std::cout << "b: " << b->getStat("hp") << " " << b->getStat("damage") << " " << b->getStat("defence") << "\n";
+        a->takeTurn();
+        b->takeTurn();
+        a->useSkill(0, b);
+        b->useSkill(0, a);
+        std::cin.get();
+    }
+
+    return 0;
+
     if (!al_init())
     {
         std::cout << "Failed to start Allegro.";

@@ -109,11 +109,20 @@ bool Space::loadFromFile(std::string filename)
 
 ALLEGRO_BITMAP* Space::getImageFromLocation(int w, int d, int h)
 {
-    if (w >= this->w || d >= this->d || h >= this->h)
+    if (!this->within_array_bounds(w, d, h))
     {
         return nullptr;
     }
     return this->image_list.getImageFromID(this->id_array[w][d][h].id);
+}
+
+bool Space::getWalkableFromLocation(int w, int d, int h)
+{
+    if (!this->within_array_bounds(w, d, h))
+    {
+        return false;
+    }
+    return this->image_list.getImageFromID(this->id_array[w][d][h].walkable);
 }
 
 int Space::getWidth()
@@ -129,4 +138,9 @@ int Space::getDepth()
 int Space::getHeight()
 {
     return this->h;
+}
+
+bool Space::within_array_bounds(int w, int d, int h)
+{
+    return !(w >= this->w || d >= this->d || h >= this->h);
 }
