@@ -33,13 +33,16 @@ public:
         class SkillFunctor
         {
         public:
+            SkillFunctor();
             void operator()(CombatUnit* user, CombatUnit* target); //pass this to user
             void call(CombatUnit* user, CombatUnit* target);
             void setName(std::string name);
             std::string getName();
+            std::string getDesc();
         protected:
             virtual void func(CombatUnit* user, CombatUnit* target) = 0;
             std::string name;
+            std::string desc;
         };
         class Buff
         {
@@ -50,11 +53,12 @@ public:
             virtual void endEffect(CombatUnit* user);
             void takeTurn(); //decrements turn counter
             bool toKeep();
-            void setName(std::string name);
             std::string getName();
+            std::string getDesc();
         protected:
             int turns_remaining;
             std::string name;
+            std::string desc;
             //dispellabe?
         };
         static CombatUnit* getInstance(std::string unit_class);

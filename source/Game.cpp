@@ -141,14 +141,14 @@ bool Game::CombatUnit::Buff::toKeep()
     }
 }
 
-void Game::CombatUnit::Buff::setName(std::string name)
-{
-    this->name = name;
-}
-
 std::string Game::CombatUnit::Buff::getName()
 {
     return this->name;
+}
+
+std::string Game::CombatUnit::Buff::getDesc()
+{
+    return this->desc;
 }
 
 class Buff_Lower2Defence : public Game::CombatUnit::Buff
@@ -156,7 +156,8 @@ class Buff_Lower2Defence : public Game::CombatUnit::Buff
 public:
     Buff_Lower2Defence(int length) : Game::CombatUnit::Buff(length)
     {
-        this->name = "Lowers defence by 2."; //this should go in description field
+        this->name = "Minor Acid.";
+        this->desc = "Lowers defence by 2.";
     }
     void initEffect(Game::CombatUnit* user)
     {
@@ -172,6 +173,12 @@ protected:
 
 //SkillFunctor definitions
 
+Game::CombatUnit::SkillFunctor::SkillFunctor()
+{
+    this->name = "";
+    this->desc = "";
+}
+
 void Game::CombatUnit::SkillFunctor::operator()(Game::CombatUnit* user, Game::CombatUnit* target)
 {
     this->call(user, target);
@@ -182,14 +189,14 @@ void Game::CombatUnit::SkillFunctor::call(Game::CombatUnit* user, Game::CombatUn
     this->func(user, target);
 }
 
-void Game::CombatUnit::SkillFunctor::setName(std::string name)
-{
-    this->name = name;
-}
-
 std::string Game::CombatUnit::SkillFunctor::getName()
 {
     return this->name;
+}
+
+std::string Game::CombatUnit::SkillFunctor::getDesc()
+{
+    return this->desc;
 }
 
 class BasicAttack : public Game::CombatUnit::SkillFunctor
@@ -197,6 +204,12 @@ class BasicAttack : public Game::CombatUnit::SkillFunctor
     /***
     The target takes the user's damage stat as damage. Simples.
     ***/
+public:
+    BasicAttack() : Game::CombatUnit::SkillFunctor::SkillFunctor()
+    {
+        this->name = "Basic attack.";
+        this->desc = "Does the unit's damage stat as damage to the target.";
+    }
 protected:
     void func(Game::CombatUnit* user, Game::CombatUnit* target)
     {
@@ -212,6 +225,8 @@ class CumulativeAttack : public Game::CombatUnit::SkillFunctor
 public:
     CumulativeAttack()
     {
+        this->name = "Cumulative Attack";
+        this->desc = "Does increasing damage with each hit on the same target.";
         this->cur_target = nullptr;
         this->consec_hits = 1;
     }
@@ -236,6 +251,12 @@ class RiskyAttack : public Game::CombatUnit::SkillFunctor
     An attack that does high damage but applies a defence-lowering buff for one turn.
     ***/
 public:
+    RiskyAttack()
+    {
+        this->name = "Big Swing";
+        this->desc = "Does high damage, but leaves the attack wide open, lowering defence by 2.";
+    }
+protected:
     void func(Game::CombatUnit* user, Game::CombatUnit* target)
     {
         target->setStat("hp", target->getStat("hp") - (user->getStat("damage") * 2));

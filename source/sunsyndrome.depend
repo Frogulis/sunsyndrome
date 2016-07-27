@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1469629745 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1469630062 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -158,7 +158,7 @@
 1469365437 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
 	"Game.h"
 
-1469365055 d:\code projects\cpp\sunsyndrome\source\game.h
+1469630776 d:\code projects\cpp\sunsyndrome\source\game.h
 	<iostream>
 	<memory>
 	<string>
