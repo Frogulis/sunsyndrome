@@ -39,6 +39,7 @@ namespace JH
     {
     public:
         HashTable();
+        ~HashTable();
         void add(KeyT key, DataT unit);
         void del(KeyT key);
         DataT get(KeyT key);
@@ -63,6 +64,14 @@ JH::HashTable<KeyT,DataT>::HashTable()
     this->data_length = 0;
     this->filled = 0;
     this->section_size = 100;
+}
+
+template <class KeyT, class DataT>
+JH::HashTable<KeyT,DataT>::~HashTable()
+{
+    delete [] this->data;
+    delete [] this->taken_spots;
+    delete [] this->keys;
 }
 
 template <class KeyT, class DataT>

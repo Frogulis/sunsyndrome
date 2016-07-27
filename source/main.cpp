@@ -17,26 +17,117 @@
 #include "HashTable.h"
 #include "DialogueBox.h"
 #include "StringUtils.h"
+#include "AStar.h"
 
 int main(int argc, char** argv)
 {
+    bool** ar = new bool*[10];
+    for (int i = 0; i < 10; i++)
+    {
+        ar[i] = new bool[10];
+        for (int j = 0; j < 10; j++)
+        {
+            if (i == 5 && j > 3)
+            {
+                ar[i][j] = false;
+            }
+            else if (j == 3 && i > 0 && i < 7)
+            {
+                ar[i][j] = false;
+            }
+            else
+            {
+                ar[i][j] = true;
+            }
+        }
+    }
+
+    JH::AStar pf(ar, 10, 10);
+    pf.generatePath(std::pair<int,int>(2,7), std::pair<int,int>(8,7));
+
+    if (!pf.getPath().size())
+    {
+        std::cout << "no solution.";
+    }
+
+    /*for (int c = 0; c < pf.getPath().size(); c++)
+    {
+        for (int y = 0; y < 10; y++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
+                {
+                    std::cout << 'O';
+                }
+                else if (!ar[x][y])
+                {
+                    std::cout << char(178);
+                }
+                else
+                {
+                    std::cout << char(176);
+                }
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }*/
+
+    for (int y = 0; y < 10; y++)
+    {
+        for (int x = 0; x < 10; x++)
+        {
+            bool next = false;
+            for (int c = 0; c < pf.getPath().size(); c++)
+            {
+                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
+                {
+                    std::cout << 'O';
+                    next = true;
+                }
+            }
+            if (!next)
+            {
+                if (!ar[x][y])
+                {
+                    std::cout << char(178);
+                }
+                else
+                {
+                    std::cout << char(176);
+                }
+            }
+        }
+        std::cout << "\n";
+    }
+
+    return 0;
+
     Game::CombatUnit* a = Game::CombatUnit::getInstance("shadowman");
     Game::CombatUnit* b = Game::CombatUnit::getInstance("grunt");
 
     class Poison : public Game::CombatUnit::Buff
     {
     public:
-        Poison(int length) : Game::CombatUnit::Buff::Buff(length)
-        {
-
-        }
+        Poison(int length) : Game::CombatUnit::Buff::Buff(length) {}
         void turnEffect(Game::CombatUnit* user)
         {
             user->setStat("hp", user->getStat("hp") - 2);
         }
     };
 
-    a->applyBuff(new Poison(3));
+    class ZenoToxin : public Game::CombatUnit::Buff
+    {
+    public:
+        ZenoToxin(int length) : Game::CombatUnit::Buff::Buff(length) {}
+        void turnEffect(Game::CombatUnit* user)
+        {
+            user->setStat("hp", user->getStat("hp") / 2);
+        }
+    };
+
+    a->applyBuff(new ZenoToxin(3));
 
     while (true)
     {
@@ -44,8 +135,8 @@ int main(int argc, char** argv)
         std::cout << "b: " << b->getStat("hp") << " " << b->getStat("damage") << " " << b->getStat("defence") << "\n";
         a->takeTurn();
         b->takeTurn();
-        a->useSkill(0, b);
-        b->useSkill(0, a);
+        //a->useSkill(0, b);
+        //b->useSkill(0, a);
         std::cin.get();
     }
 
@@ -59,7 +150,7 @@ int main(int argc, char** argv)
 
     if (!al_init_image_addon())
     {
-        std::cout << "Failed to start Allegro Image Addon.\n";
+        std::cout << "Failed to start Allegro Imagea person who gives information to the police or to some other authority about the bad behavior or criminal activity of someone else Addon.\n";
         return -1;
     }
 

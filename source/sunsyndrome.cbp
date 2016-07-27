@@ -42,6 +42,8 @@
 			<Add option="-Wall" />
 			<Add option="-std=c++11" />
 		</Compiler>
+		<Unit filename="AStar.cpp" />
+		<Unit filename="AStar.h" />
 		<Unit filename="Actor.cpp" />
 		<Unit filename="Actor.h" />
 		<Unit filename="DialogueBox.cpp" />

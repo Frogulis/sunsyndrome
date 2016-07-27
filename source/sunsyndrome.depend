@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1469014612 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1469629745 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -19,6 +19,7 @@
 	"HashTable.h"
 	"DialogueBox.h"
 	"StringUtils.h"
+	"AStar.h"
 
 1465739134 ter
 	<iostream>
@@ -105,7 +106,7 @@
 1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
 	"HashTable.h"
 
-1467544773 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+1469362455 d:\code projects\cpp\sunsyndrome\source\hashtable.h
 	<functional>
 	<iostream>
 	"JHException.h"
@@ -154,10 +155,10 @@
 1467717312 source:d:\code projects\cpp\sunsyndrome\source\tokenizer.cpp
 	"Tokenizer.h"
 
-1469016206 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
+1469365437 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
 	"Game.h"
 
-1469014964 d:\code projects\cpp\sunsyndrome\source\game.h
+1469365055 d:\code projects\cpp\sunsyndrome\source\game.h
 	<iostream>
 	<memory>
 	<string>
@@ -168,4 +169,13 @@
 	"IsometricDisplay.h"
 	"MenuDisplay.h"
 	"HashTable.h"
+
+1469606114 d:\code projects\cpp\sunsyndrome\source\astar.h
+	<vector>
+	<iostream>
+	<list>
+	<cmath>
+
+1469629892 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
+	"AStar.h"
 

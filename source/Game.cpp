@@ -112,7 +112,6 @@ Game::CombatUnit::Buff::Buff(int length)
 void Game::CombatUnit::Buff::initEffect(CombatUnit* user)
 {
     //do nothing by default
-    std::cout << "start";
 }
 
 void Game::CombatUnit::Buff::turnEffect(CombatUnit* user)
@@ -157,7 +156,7 @@ class Buff_Lower2Defence : public Game::CombatUnit::Buff
 public:
     Buff_Lower2Defence(int length) : Game::CombatUnit::Buff(length)
     {
-        this->name = "Lowers defence by 2.";
+        this->name = "Lowers defence by 2."; //this should go in description field
     }
     void initEffect(Game::CombatUnit* user)
     {
@@ -214,7 +213,7 @@ public:
     CumulativeAttack()
     {
         this->cur_target = nullptr;
-        this->consec_hits = 0;
+        this->consec_hits = 1;
     }
 protected:
     void func(Game::CombatUnit* user, Game::CombatUnit* target)

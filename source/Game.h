@@ -55,6 +55,7 @@ public:
         protected:
             int turns_remaining;
             std::string name;
+            //dispellabe?
         };
         static CombatUnit* getInstance(std::string unit_class);
         ~CombatUnit();
