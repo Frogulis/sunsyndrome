@@ -1,8 +1,6 @@
 #ifndef __SPACEH_GUARD
 #define __SPACEH_GUARD
 
-class ImageList;
-
 #include <string>
 
 #include <allegro5/allegro.h>
@@ -12,6 +10,16 @@ class ImageList;
 class Space
 {
 public:
+    struct Tile
+    {
+        Tile()
+        {
+            id = 999;
+            walkable = false;
+        }
+        int id;
+        bool walkable;
+    };
     Space();
 
     bool loadFromFile(std::string filename);
@@ -22,13 +30,14 @@ public:
     int getHeight();
 
     ALLEGRO_BITMAP* getImageFromLocation(int w, int d, int h);
-
+    bool getWalkableFromLocation(int w, int d, int h);
 private:
-    int*** id_array;
+    bool within_array_bounds(int w, int d, int h);
+    Tile*** id_array;
     int w;
     int d;
     int h;
-    ImageList* image_list;
+    ImageList image_list;
 };
 
 #endif // __SPACEH_GUARD

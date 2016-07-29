@@ -1,16 +1,147 @@
 #include <iostream>
 #include <string>
+#include <functional>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
 
+#include "Game.h"
 #include "ImageList.h"
 #include "IDisplay.h"
 #include "IsometricDisplay.h"
 #include "Space.h"
+#include "Actor.h"
+#include "HashTable.h"
+#include "DialogueBox.h"
+#include "StringUtils.h"
+#include "AStar.h"
 
 int main(int argc, char** argv)
 {
+    bool** ar = new bool*[10];
+    for (int i = 0; i < 10; i++)
+    {
+        ar[i] = new bool[10];
+        for (int j = 0; j < 10; j++)
+        {
+            if (i == 5 && j > 3)
+            {
+                ar[i][j] = false;
+            }
+            else if (j == 3 && i > 0 && i < 7)
+            {
+                ar[i][j] = false;
+            }
+            else
+            {
+                ar[i][j] = true;
+            }
+        }
+    }
+
+    JH::AStar pf(ar, 10, 10);
+    pf.generatePath(std::pair<int,int>(2,7), std::pair<int,int>(8,7));
+
+    if (!pf.getPath().size())
+    {
+        std::cout << "no solution.";
+    }
+
+    /*for (int c = 0; c < pf.getPath().size(); c++)
+    {
+        for (int y = 0; y < 10; y++)
+        {
+            for (int x = 0; x < 10; x++)
+            {
+                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
+                {
+                    std::cout << 'O';
+                }
+                else if (!ar[x][y])
+                {
+                    std::cout << char(178);
+                }
+                else
+                {
+                    std::cout << char(176);
+                }
+            }
+            std::cout << "\n";
+        }
+        std::cout << "\n";
+    }*/
+
+    for (int y = 0; y < 10; y++)
+    {
+        for (int x = 0; x < 10; x++)
+        {
+            bool next = false;
+            for (int c = 0; c < pf.getPath().size(); c++)
+            {
+                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
+                {
+                    std::cout << 'O';
+                    next = true;
+                }
+            }
+            if (!next)
+            {
+                if (!ar[x][y])
+                {
+                    std::cout << char(178);
+                }
+                else
+                {
+                    std::cout << char(176);
+                }
+            }
+        }
+        std::cout << "\n";
+    }
+
+    return 0;
+
+    Game::CombatUnit* a = Game::CombatUnit::getInstance("shadowman");
+    Game::CombatUnit* b = Game::CombatUnit::getInstance("grunt");
+
+    class Poison : public Game::CombatUnit::Buff
+    {
+    public:
+        Poison(int length) : Game::CombatUnit::Buff::Buff(length) {}
+        void turnEffect(Game::CombatUnit* user)
+        {
+            user->setStat("hp", user->getStat("hp") - 2);
+        }
+    };
+
+    class ZenoToxin : public Game::CombatUnit::Buff
+    {
+    public:
+        ZenoToxin(int length) : Game::CombatUnit::Buff::Buff(length) {}
+        void turnEffect(Game::CombatUnit* user)
+        {
+            user->setStat("hp", user->getStat("hp") / 2);
+        }
+    };
+
+    a->applyBuff(new ZenoToxin(3));
+
+    while (true)
+    {
+        std::cout << "a: " << a->getStat("hp") << " " << a->getStat("damage") << " " << a->getStat("defence") << "\n";
+        std::cout << "b: " << b->getStat("hp") << " " << b->getStat("damage") << " " << b->getStat("defence") << "\n";
+        a->takeTurn();
+        b->takeTurn();
+        //a->useSkill(0, b);
+        //b->useSkill(0, a);
+        std::cin.get();
+    }
+
+    return 0;
+
     if (!al_init())
     {
         std::cout << "Failed to start Allegro.";
@@ -19,7 +150,25 @@ int main(int argc, char** argv)
 
     if (!al_init_image_addon())
     {
-        std::cout << "Failed to start Allegro Image Addon.\n";
+        std::cout << "Failed to start Allegro Imagea person who gives information to the police or to some other authority about the bad behavior or criminal activity of someone else Addon.\n";
+        return -1;
+    }
+
+    if (!al_init_primitives_addon())
+    {
+        std::cout << "Failed to start Allegro Primitives Addon.\n";
+        return -1;
+    }
+
+    if (!al_init_font_addon())
+    {
+        std::cout << "Failed to start Allegro Font Addon.\n";
+        return -1;
+    }
+
+    if (!al_init_ttf_addon())
+    {
+        std::cout << "Failed to start Allegro TTF Addon.\n";
         return -1;
     }
 
@@ -51,27 +200,14 @@ int main(int argc, char** argv)
     }
     al_register_event_source(eq, al_get_keyboard_event_source());
 
-    ImageList tiles;
-
-    if (!tiles.loadImagesFromIndexFile("resources/sprites/tiles"))
+    if (!al_install_mouse())
     {
-        std::cout << "Failed to load images.\n";
+        std::cout << "Failed to install mouse.";
         return -1;
     }
+    al_register_event_source(eq, al_get_mouse_event_source());
 
-    IDisplay* my_drawer = new IsometricDisplay;
-
-    Space level;
-
-    level.setImageList(&tiles);
-
-    if (!level.loadFromFile("resources/levels/practice"))
-    {
-        std::cout << "Failed to load level;";
-        return -1;
-    }
-
-    my_drawer->setSpace(&level);
+    Game base;
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
@@ -88,21 +224,21 @@ int main(int argc, char** argv)
             }
             else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
-                if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+                if (ev.keyboard.keycode == ALLEGRO_KEY_ESCAPE) //current keyboard input section
                 {
                     std::cout << "Safely quitting.";
                     al_destroy_display(main_window);
                     al_destroy_event_queue(eq);
                     al_destroy_timer(fps_timer);
-                    delete my_drawer;
                     return 0;
                 }
             }
+            base.runEvents(ev);
         }
         if (ready_to_draw)
         {
-            al_clear_to_color(al_map_rgb(255,255,0));
-            my_drawer->draw();
+            base.runLogic();
+            base.runDisplay();
             al_flip_display();
             ready_to_draw = false;
         }

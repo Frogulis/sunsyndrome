@@ -2,8 +2,8 @@
 
 IsometricDisplay::IsometricDisplay()
 {
-    this->image_list = nullptr;
-    this->space = nullptr;
+    this->x = 200;
+    this->y = 200;
 }
 
 void IsometricDisplay::draw()
@@ -21,7 +21,10 @@ void IsometricDisplay::draw()
                 ALLEGRO_BITMAP* cur = space->getImageFromLocation(cw,cd,ch);
                 if (cur)
                 {
-                    al_draw_bitmap(cur, 200 + 32.0 * (cw - cd), 200 + 16.0 * (cw + cd) + 18.0 * ch, 0);
+                    al_draw_bitmap(cur,
+                                   this->x + 32.0 * (cw - cd) - al_get_bitmap_width(cur)/2,
+                                   this->y + 16.0 * (cw + cd) + 18.0 * ch - al_get_bitmap_height(cur)/2,
+                                   0);
                 }
             }
         }
@@ -31,7 +34,17 @@ void IsometricDisplay::draw()
 
 void IsometricDisplay::setSpace(Space* space)
 {
-    this->space = space;
+    this->space.reset(space);
 }
 
+std::shared_ptr<Space> IsometricDisplay::getSpacePtr()
+{
+    return this->space;
+}
+
+void IsometricDisplay::changeOffset(float x, float y)
+{
+    this->x += x;
+    this->y += y;
+}
 
