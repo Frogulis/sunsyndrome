@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1469889211 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -54,7 +54,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
+1469890995 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
 1469772186 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
@@ -64,32 +64,34 @@
 1469772186 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
 	"IDisplay.h"
 
-1469777173 d:\code projects\cpp\sunsyndrome\source\idisplay.h
-	<allegro5/allegro.h>
-	<allegro5/allegro_image.h>
+1469884992 d:\code projects\cpp\sunsyndrome\source\idisplay.h
 	"ImageList.h"
 	"Space.h"
 
-1469772186 d:\code projects\cpp\sunsyndrome\source\space.h
+1469885424 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1469891149 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1469772186 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1469891031 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	<memory>
+	<allegro5/allegro.h>
+	<allegro5/allegro_image.h>
 	"IDisplay.h"
 	"Space.h"
+	"HashTable.h"
+	"AStar.h"
 
 1466001505 
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+1469889189 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
 	"Actor.h"
 
-1469772186 d:\code projects\cpp\sunsyndrome\source\actor.h
+1469888425 d:\code projects\cpp\sunsyndrome\source\actor.h
 	<exception>
 	<iostream>
 	<string>
@@ -155,10 +157,10 @@
 1469772186 source:d:\code projects\cpp\sunsyndrome\source\tokenizer.cpp
 	"Tokenizer.h"
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
+1469885812 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
 	"Game.h"
 
-1469772186 d:\code projects\cpp\sunsyndrome\source\game.h
+1469798501 d:\code projects\cpp\sunsyndrome\source\game.h
 	<iostream>
 	<memory>
 	<string>

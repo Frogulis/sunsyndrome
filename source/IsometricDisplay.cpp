@@ -4,6 +4,12 @@ IsometricDisplay::IsometricDisplay()
 {
     this->x = 200;
     this->y = 200;
+
+    for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
+    {
+        this->keys[i] = false;
+    }
+    this->mouse_button_state = 0;
 }
 
 void IsometricDisplay::draw()
@@ -32,6 +38,39 @@ void IsometricDisplay::draw()
 
 }
 
+bool IsometricDisplay::load(std::string name)
+{
+    Space* s = new Space;
+    if (!s->loadFromFile(name))
+    {
+        return false;
+    }
+    this->space.reset(s);
+    CombatUnit* temp = CombatUnit::getInstance("shadowman");
+    temp->setW(1);
+    temp->setD(4);
+    temp->setH(this->space->getArenaHeight());
+    this->parties.first.push_back(temp);
+    bool** res = this->generateWalkableArrayFor(this->parties.first[0]);
+    for (int y = 0; y < this->space->getDepth(); y++)
+    {
+        for (int x = 0; x < this->space->getWidth(); x++)
+        {
+            if (res[x][y])
+            {
+                std::cout << char(178);
+            }
+            else
+            {
+                std::cout << char(176);
+            }
+        }
+        std::cout << "\n";
+    }
+
+    return true;
+}
+
 void IsometricDisplay::setSpace(Space* space)
 {
     this->space.reset(space);
@@ -46,5 +85,394 @@ void IsometricDisplay::changeOffset(float x, float y)
 {
     this->x += x;
     this->y += y;
+}
+
+void IsometricDisplay::runEvents(ALLEGRO_EVENT &ev)
+{
+    if (ev.type == ALLEGRO_EVENT_KEY_UP)
+    {
+        this->keys[ev.keyboard.keycode] = false;
+    }
+    else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
+    {
+        this->keys[ev.keyboard.keycode] = true;
+    }
+    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+    {
+        this->mouse_button_state |= 1 << (ev.mouse.button - 1);
+    }
+    else if (ev.type == ALLEGRO_EVENT_MOUSE_BUTTON_UP)
+    {
+        this->mouse_button_state &= ~(1 << (ev.mouse.button - 1));
+    }
+}
+
+void IsometricDisplay::runLogic()
+{
+    if (this->keys[ALLEGRO_KEY_UP])
+    {
+        this->changeOffset(0, -5);
+    }
+    if (this->keys[ALLEGRO_KEY_DOWN])
+    {
+        this->changeOffset(0, 5);
+    }
+    if (this->keys[ALLEGRO_KEY_LEFT])
+    {
+        this->changeOffset(-5, 0);
+    }
+    if (this->keys[ALLEGRO_KEY_RIGHT])
+    {
+        this->changeOffset(5, 0);
+    }
+}
+
+bool** IsometricDisplay::generateWalkableArrayFor(IsometricDisplay::CombatUnit* unit)
+{
+    if (!space)
+    {
+        std::cout << "Failed to generate walkability array without a space.\n";
+        return nullptr;
+    }
+    bool** result = new bool*[this->space->getWidth()];
+    for (int r_i = 0; r_i < this->space->getWidth(); r_i++)
+    {
+        result[r_i] = new bool[this->space->getDepth()];
+        for (int r_j = 0; r_j < this->space->getDepth(); r_j++)
+        {
+            result[r_i][r_j] = true;
+        }
+    }
+    for (int i = 0; i < this->space->getWidth(); i++)
+    {
+        for (int j = 0; j < this->space->getDepth(); j++)
+        {
+            result[i][j] = this->space->getWalkableFromLocation(i, j, this->space->getArenaHeight());
+        }
+    }
+    for (std::vector<CombatUnit*>::iterator i = this->parties.first.begin(); i != this->parties.first.end(); i++)
+    {
+        if ((*i)->getW() != unit->getW() || (*i)->getD() != unit->getD()) //i.e. in a different spot i.e. different unit
+        {
+            result[(*i)->getW()][(*i)->getD()] = false;
+        }
+    }
+    for (std::vector<CombatUnit*>::iterator i = this->parties.second.begin(); i != this->parties.second.end(); i++)
+    {
+        if ((*i)->getW() != unit->getW() || (*i)->getD() != unit->getD())
+        {
+            result[(*i)->getW()][(*i)->getD()] = false;
+        }
+    }
+    return result;
+}
+
+//Buff definitions
+IsometricDisplay::CombatUnit::Buff::Buff(int length)
+{
+    this->turns_remaining = length;
+};
+
+void IsometricDisplay::CombatUnit::Buff::initEffect(CombatUnit* user)
+{
+    //do nothing by default
+}
+
+void IsometricDisplay::CombatUnit::Buff::turnEffect(CombatUnit* user)
+{
+    //do nothing by default
+}
+
+void IsometricDisplay::CombatUnit::Buff::endEffect(CombatUnit* user)
+{
+    //do nothing by default
+}
+
+void IsometricDisplay::CombatUnit::Buff::takeTurn()
+{
+    this->turns_remaining--;
+}
+
+bool IsometricDisplay::CombatUnit::Buff::toKeep()
+{
+    if (this->turns_remaining <= 0)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+std::string IsometricDisplay::CombatUnit::Buff::getName()
+{
+    return this->name;
+}
+
+std::string IsometricDisplay::CombatUnit::Buff::getDesc()
+{
+    return this->desc;
+}
+
+class Buff_Lower2Defence : public IsometricDisplay::CombatUnit::Buff
+{
+public:
+    Buff_Lower2Defence(int length) : IsometricDisplay::CombatUnit::Buff(length)
+    {
+        this->name = "Minor Acid.";
+        this->desc = "Lowers defence by 2.";
+    }
+    void initEffect(IsometricDisplay::CombatUnit* user)
+    {
+        user->setStat("defence", user->getStat("defence") - this->strength);
+    }
+    void endEffect(IsometricDisplay::CombatUnit* user)
+    {
+        user->setStat("defence", user->getStat("defence") + this->strength);
+    }
+protected:
+    const float strength = 2;
+};
+
+//SkillFunctor definitions
+
+IsometricDisplay::CombatUnit::SkillFunctor::SkillFunctor()
+{
+    this->name = "";
+    this->desc = "";
+}
+
+void IsometricDisplay::CombatUnit::SkillFunctor::operator()(IsometricDisplay::CombatUnit* user, IsometricDisplay::CombatUnit* target)
+{
+    this->call(user, target);
+}
+
+void IsometricDisplay::CombatUnit::SkillFunctor::call(IsometricDisplay::CombatUnit* user, IsometricDisplay::CombatUnit* target)
+{
+    this->func(user, target);
+}
+
+std::string IsometricDisplay::CombatUnit::SkillFunctor::getName()
+{
+    return this->name;
+}
+
+std::string IsometricDisplay::CombatUnit::SkillFunctor::getDesc()
+{
+    return this->desc;
+}
+
+class BasicAttack : public IsometricDisplay::CombatUnit::SkillFunctor
+{
+    /***
+    The target takes the user's damage stat as damage. Simples.
+    ***/
+public:
+    BasicAttack() : IsometricDisplay::CombatUnit::SkillFunctor::SkillFunctor()
+    {
+        this->name = "Basic attack.";
+        this->desc = "Does the unit's damage stat as damage to the target.";
+    }
+protected:
+    void func(IsometricDisplay::CombatUnit* user, IsometricDisplay::CombatUnit* target)
+    {
+        target->setStat("hp", target->getStat("hp") - user->getStat("damage"));
+    }
+};
+
+class CumulativeAttack : public IsometricDisplay::CombatUnit::SkillFunctor
+{
+    /***
+    Does increasing damage with each hit on the same target.
+    ***/
+public:
+    CumulativeAttack()
+    {
+        this->name = "Cumulative Attack";
+        this->desc = "Does increasing damage with each hit on the same target.";
+        this->cur_target = nullptr;
+        this->consec_hits = 1;
+    }
+protected:
+    void func(IsometricDisplay::CombatUnit* user, IsometricDisplay::CombatUnit* target)
+    {
+        if (this->cur_target != target)
+        {
+            this->cur_target = target;
+            this->consec_hits = 1;
+        }
+        target->setStat("hp", target->getStat("hp") - (user->getStat("damage") * this->consec_hits * 0.5));
+        this->consec_hits++;
+    }
+    IsometricDisplay::CombatUnit* cur_target;
+    int consec_hits;
+};
+
+class RiskyAttack : public IsometricDisplay::CombatUnit::SkillFunctor
+{
+    /***
+    An attack that does high damage but applies a defence-lowering buff for one turn.
+    ***/
+public:
+    RiskyAttack()
+    {
+        this->name = "Big Swing";
+        this->desc = "Does high damage, but leaves the attack wide open, lowering defence by 2.";
+    }
+protected:
+    void func(IsometricDisplay::CombatUnit* user, IsometricDisplay::CombatUnit* target)
+    {
+        target->setStat("hp", target->getStat("hp") - (user->getStat("damage") * 2));
+        user->applyBuff(new Buff_Lower2Defence(1));
+    }
+};
+
+//CombatUnit definitions
+IsometricDisplay::CombatUnit::CombatUnit()
+{
+    this->w = 0;
+    this->d = 0;
+    this->h = 0;
+    this->stats.add("damage", 10);
+    this->stats.add("hp", 10);
+    this->stats.add("defence", 10);
+}
+
+IsometricDisplay::CombatUnit::~CombatUnit()
+{
+    for (std::vector<IsometricDisplay::CombatUnit::SkillFunctor*>::iterator i = this->skills.begin(); i != skills.end(); i++)
+    {
+        delete *i;
+    }
+    for (std::vector<Buff*>::iterator i = this->buffs.begin(); i != buffs.end(); i++)
+    {
+        delete *i;
+    }
+}
+
+void IsometricDisplay::CombatUnit::setW(int w)
+{
+    this->w = w;
+}
+
+void IsometricDisplay::CombatUnit::setD(int d)
+{
+    this->d = d;
+}
+
+void IsometricDisplay::CombatUnit::setH(int h)
+{
+    this->h = h;
+}
+
+int IsometricDisplay::CombatUnit::getW()
+{
+    return this->w;
+}
+
+int IsometricDisplay::CombatUnit::getD()
+{
+    return this->d;
+}
+
+int IsometricDisplay::CombatUnit::getH()
+{
+    return this->h;
+}
+
+void IsometricDisplay::CombatUnit::setStat(std::string stat, float value)
+{
+    stats.add(stat, value);
+}
+
+float IsometricDisplay::CombatUnit::getStat(std::string stat)
+{
+    float result;
+    try
+    {
+        result = stats.get(stat);
+    }
+    catch (JH::HTElementNotFoundException &e)
+    {
+        std::cout << e.what();
+        result = 0;
+    }
+    return result;
+}
+
+void IsometricDisplay::CombatUnit::applyBuff(Buff* b)
+{
+    b->initEffect(this);
+    this->buffs.push_back(b);
+}
+
+void IsometricDisplay::CombatUnit::useSkill(unsigned int number, IsometricDisplay::CombatUnit* target)
+{
+    if (number > this->skills.size())
+    {
+        number = 0;
+    }
+    this->skills[number]->call(this, target);
+}
+
+void IsometricDisplay::CombatUnit::takeTurn()
+{
+    for (std::vector<IsometricDisplay::CombatUnit::Buff*>::iterator i = this->buffs.begin(); i < this->buffs.end(); i++)
+    {
+        (*i)->turnEffect(this); //lol double dereference ew
+        (*i)->takeTurn();
+        if (!(*i)->toKeep())
+        {
+            (*i)->endEffect(this);
+            delete *i;
+            this->buffs.erase(i);
+        }
+    }
+}
+
+class Unit_Shadowman : public IsometricDisplay::CombatUnit
+{
+    ///does increasing damage with further hits on the same target, benefits a 'pursuer' playstyle
+public:
+    Unit_Shadowman()
+    {
+        this->stats.add("hp", 50);
+        this->stats.add("damage", 5);
+        this->stats.add("defence", 5);
+        this->skills.push_back(new CumulativeAttack);
+        this->skills.push_back(new RiskyAttack);
+    }
+};
+
+class Unit_Grunt : public IsometricDisplay::CombatUnit
+{
+    ///boring fat man class. punches stuff.
+public:
+    Unit_Grunt()
+    {
+        this->stats.add("hp", 50);
+        this->stats.add("damage", 5);
+        this->stats.add("defence", 5);
+        this->skills.push_back(new RiskyAttack);
+    }
+};
+
+IsometricDisplay::CombatUnit* IsometricDisplay::CombatUnit::getInstance(std::string unit_class)
+{
+    if (unit_class == "shadowman")
+    {
+        IsometricDisplay::CombatUnit* temp = new Unit_Shadowman;
+        return temp;
+    }
+    else if (unit_class == "grunt")
+    {
+        return new Unit_Grunt;
+    }
+    else
+    {
+        //Come up with a suitable default/error class...?
+        return new Unit_Shadowman;
+    }
 }
 

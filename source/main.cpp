@@ -19,9 +19,11 @@
 #include "StringUtils.h"
 #include "AStar.h"
 
+void safe_exit();
+
 int main(int argc, char** argv)
 {
-    bool** ar = new bool*[10];
+    /*bool** ar = new bool*[10];
     for (int i = 0; i < 10; i++)
     {
         ar[i] = new bool[10];
@@ -50,7 +52,7 @@ int main(int argc, char** argv)
         std::cout << "no solution.";
     }
 
-    /*for (int c = 0; c < pf.getPath().size(); c++)
+    for (int c = 0; c < pf.getPath().size(); c++)
     {
         for (int y = 0; y < 10; y++)
         {
@@ -72,7 +74,7 @@ int main(int argc, char** argv)
             std::cout << "\n";
         }
         std::cout << "\n";
-    }*/
+    }
 
     for (int y = 0; y < 10; y++)
     {
@@ -103,44 +105,7 @@ int main(int argc, char** argv)
     }
 
     return 0;
-
-    Game::CombatUnit* a = Game::CombatUnit::getInstance("shadowman");
-    Game::CombatUnit* b = Game::CombatUnit::getInstance("grunt");
-
-    class Poison : public Game::CombatUnit::Buff
-    {
-    public:
-        Poison(int length) : Game::CombatUnit::Buff::Buff(length) {}
-        void turnEffect(Game::CombatUnit* user)
-        {
-            user->setStat("hp", user->getStat("hp") - 2);
-        }
-    };
-
-    class ZenoToxin : public Game::CombatUnit::Buff
-    {
-    public:
-        ZenoToxin(int length) : Game::CombatUnit::Buff::Buff(length) {}
-        void turnEffect(Game::CombatUnit* user)
-        {
-            user->setStat("hp", user->getStat("hp") / 2);
-        }
-    };
-
-    a->applyBuff(new ZenoToxin(3));
-
-    while (true)
-    {
-        std::cout << "a: " << a->getStat("hp") << " " << a->getStat("damage") << " " << a->getStat("defence") << "\n";
-        std::cout << "b: " << b->getStat("hp") << " " << b->getStat("damage") << " " << b->getStat("defence") << "\n";
-        a->takeTurn();
-        b->takeTurn();
-        //a->useSkill(0, b);
-        //b->useSkill(0, a);
-        std::cin.get();
-    }
-
-    return 0;
+    */
 
     if (!al_init())
     {
@@ -191,26 +156,39 @@ int main(int argc, char** argv)
     {
         std::cout << "Failed to create timer.";
     }
-    al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+
 
     if (!al_install_keyboard())
     {
         std::cout << "Failed to install keyboard.";
         return -1;
     }
-    al_register_event_source(eq, al_get_keyboard_event_source());
+
 
     if (!al_install_mouse())
     {
         std::cout << "Failed to install mouse.";
         return -1;
     }
+
+
+    al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+    al_register_event_source(eq, al_get_keyboard_event_source());
     al_register_event_source(eq, al_get_mouse_event_source());
+    al_register_event_source(eq, al_get_display_event_source(main_window));
 
     Game base;
+    if (!base.init())
+    {
+        std::cout << "Failed to initialise game! Quitting...\n";
+        return -1;
+    }
 
     bool ready_to_draw = false;
     al_start_timer(fps_timer);
+
+    Actor a;
+    a.loadByName("shadowman");
 
     while (true)
     {
@@ -221,6 +199,14 @@ int main(int argc, char** argv)
             if (ev.type == ALLEGRO_EVENT_TIMER)
             {
                 ready_to_draw = true;
+            }
+            else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                std::cout << "Safely quitting.";
+                al_destroy_display(main_window);
+                al_destroy_event_queue(eq);
+                al_destroy_timer(fps_timer);
+                return 0;
             }
             else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
@@ -244,3 +230,4 @@ int main(int argc, char** argv)
         }
     }
 }
+
