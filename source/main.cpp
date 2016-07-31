@@ -165,12 +165,11 @@ int main(int argc, char** argv)
     }
 
 
-    if (!al_install_mouse())
+    if (!al_install_mouse() || !al_set_mouse_cursor(main_window, al_create_mouse_cursor(al_load_bitmap("resources/sprites/UI/cursor/clicker.png"), 16, 31)))
     {
         std::cout << "Failed to install mouse.";
         return -1;
     }
-    al_hide_mouse_cursor(main_window);
 
 
     al_register_event_source(eq, al_get_timer_event_source(fps_timer));
