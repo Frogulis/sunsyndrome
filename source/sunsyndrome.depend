@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1469889211 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1469961350 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -73,10 +73,10 @@
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1469961247 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1469972065 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1469949876 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1469966842 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	<memory>
 	<allegro5/allegro.h>
@@ -178,6 +178,6 @@
 	<list>
 	<cmath>
 
-1469772186 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
+1469971435 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
 	"AStar.h"
 

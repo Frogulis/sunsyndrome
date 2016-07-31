@@ -91,10 +91,14 @@ private:
     bool mouse_moved;
     std::shared_ptr<Space> space;
     std::pair<std::vector<CombatUnit*>,std::vector<CombatUnit*> > parties; //first is player party
+    CombatUnit* focused_unit;
+    void callAStar(std::pair<int,int> goal);
+    JH::AStar* focused_unit_pf;
     float x, y;
     void setCursorColour();
     int cursorOverUnit(); //-1 ally, 0 no, 1 enemy
     int cursor_x, cursor_y; //tile cursor in tile units
+    bool cursor_moved;
     JH::HashTable<std::string,ALLEGRO_BITMAP*> cursors;
     int cursor_move_step;
     int cursor_move_time;

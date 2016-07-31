@@ -18,6 +18,10 @@ IsometricDisplay::IsometricDisplay()
     this->mouse_moved = false;
     this->cursor_move_step = 0;
     this->cursor_move_time = 7;
+    this->cursor_moved = false;
+
+    this->focused_unit = nullptr;
+    this->focused_unit_pf = nullptr;
 }
 
 void IsometricDisplay::draw()
@@ -42,6 +46,38 @@ void IsometricDisplay::draw()
                 }
             }
         }
+    }
+
+    if (mode == 2)
+    {
+        if (this->focused_unit_pf)
+        {
+            std::vector<std::pair<int,int> >* pf_result = &this->focused_unit_pf->getPath();
+            if (pf_result->size() == 0)
+            {
+                this->cur_cursor = this->cursors.get("red");
+            }
+            else
+            {
+                for (std::vector<std::pair<int,int> >::reverse_iterator tile = pf_result->rbegin(); tile != pf_result->rend(); tile++)
+                {
+                    ALLEGRO_BITMAP* cursor_to_use;
+                    if (tile + 1 == pf_result->rend()) //last element
+                    {
+                        cursor_to_use = this->cursors.get("lgreen");
+                    }
+                    else
+                    {
+                        cursor_to_use = this->cursors.get("white");
+                    }
+                    al_draw_bitmap(cursor_to_use,
+                                   this->x + 32.0 * (tile->first - tile->second) - al_get_bitmap_width(cursor_to_use)/2,
+                                   this->y + 16.0 * (tile->first + tile->second) + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(cursor_to_use)/2,
+                                   0);
+                }
+            }
+        }
+
     }
 
     al_draw_bitmap(this->cur_cursor,
@@ -90,14 +126,18 @@ bool IsometricDisplay::load(std::string name)
     ALLEGRO_BITMAP* lred_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_lred.png");
     ALLEGRO_BITMAP* yellow_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_yellow.png");
     ALLEGRO_BITMAP* green_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_green.png");
+    ALLEGRO_BITMAP* white_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_white.png");
+    ALLEGRO_BITMAP* lgreen_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_lgreen.png");
 
-    if (red_c && blue_c && lred_c && yellow_c && green_c)
+    if (red_c && blue_c && lred_c && yellow_c && green_c && white_c && lgreen_c)
     {
         this->cursors.add("red", red_c);
         this->cursors.add("blue", blue_c);
         this->cursors.add("lred", lred_c);
         this->cursors.add("yellow", yellow_c);
         this->cursors.add("green", green_c);
+        this->cursors.add("white", white_c);
+        this->cursors.add("lgreen", lgreen_c);
     }
     else
     {
@@ -107,6 +147,8 @@ bool IsometricDisplay::load(std::string name)
         al_destroy_bitmap(lred_c);
         al_destroy_bitmap(yellow_c);
         al_destroy_bitmap(green_c);
+        al_destroy_bitmap(white_c);
+        al_destroy_bitmap(lgreen_c);
         return false;
     }
     this->setCursorColour();
@@ -169,6 +211,7 @@ void IsometricDisplay::runLogic()
         this->cursor_y = std::round((this->mouse_state.y - this->y - ((this->mouse_state.x - this->x) / 2) - 18.0 * this->space->getArenaHeight()) / 32);
         this->cursor_x = std::round((this->mouse_state.y - this->y  - 18.0 * this->space->getArenaHeight()) / 16 - this->cursor_y);
         setCursorColour();
+        this->callAStar(std::pair<int,int>(this->cursor_x, this->cursor_y));
     }
     if (this->keys[ALLEGRO_KEY_W])
     {
@@ -193,36 +236,78 @@ void IsometricDisplay::runLogic()
             this->cursor_y--;
             cursor_move_step = 0;
             setCursorColour();
+            this->callAStar(std::pair<int,int>(this->cursor_x, this->cursor_y));
         }
         if (this->keys[ALLEGRO_KEY_DOWN])
         {
             this->cursor_y++;
             cursor_move_step = 0;
             setCursorColour();
+            this->callAStar(std::pair<int,int>(this->cursor_x, this->cursor_y));
         }
         if (this->keys[ALLEGRO_KEY_LEFT])
         {
             this->cursor_x--;
             cursor_move_step = 0;
             setCursorColour();
+            this->callAStar(std::pair<int,int>(this->cursor_x, this->cursor_y));
         }
         if (this->keys[ALLEGRO_KEY_RIGHT])
         {
             this->cursor_x++;
             cursor_move_step = 0;
             setCursorColour();
+            this->callAStar(std::pair<int,int>(this->cursor_x, this->cursor_y));
         }
     }
     cursor_move_step++;
-    if (this->keys[ALLEGRO_KEY_SPACE])
+    if (this->keys[ALLEGRO_KEY_SPACE] || (this->mouse_button_state & 1))
     {
-        //for (std::vector<CombatUnit*>::iterator i = this->parties.first.begin();)
+        this->mouse_button_state &= ~(1); //safe to reset these in this case
+        this->keys[ALLEGRO_KEY_SPACE] = false;
+        if (this->mode == 0)
+        {
+            int c_state = this->cursorOverUnit();
+            if (c_state)
+            {
+                if (c_state == -1)
+                {
+                    for (std::vector<CombatUnit*>::iterator u = this->parties.first.begin(); u != this->parties.first.end(); u++)
+                    {
+                        if ((*u)->getW() == this->cursor_x && (*u)->getD() == this->cursor_y)
+                        {
+                            this->focused_unit = *u;
+                            this->mode = 2;
+                            if (this->focused_unit_pf)
+                            {
+                                delete this->focused_unit_pf;
+                            }
+                            this->focused_unit_pf = new JH::AStar(this->generateWalkableArrayFor(this->focused_unit), this->space->getWidth(), this->space->getDepth());
+                            break;
+                        }
+                        else
+                        {
+                            this->focused_unit = nullptr;
+                        }
+                    }
+                }
+            }
+        }
+        else if (this->mode == 1)
+        {
+            //?
+        }
+        else if (this->mode == 2)
+        {
+            this->mode = 0;
+        }
+        this->setCursorColour();
     }
 }
 
 void IsometricDisplay::setCursorColour()
 {
-    if (mode == 0)
+    if (this->mode == 0)
     {
         int cursor_unit = this->cursorOverUnit();
         if (cursor_unit == -1) //ally
@@ -237,6 +322,32 @@ void IsometricDisplay::setCursorColour()
         {
             this->cur_cursor = this->cursors.get("lred");
         }
+    }
+    else if (mode == 1)
+    {
+        this->cur_cursor = this->cursors.get("yellow");
+    }
+    else if (mode == 2)
+    {
+        if (this->cursor_x >= this->space->getWidth() || this->cursor_x < 0 ||
+            this->cursor_y >= this->space->getDepth() || this->cursor_y < 0)
+        {
+            this->cur_cursor = this->cursors.get("red");
+        }
+        else
+        {
+            this->cur_cursor = this->cursors.get("lgreen");
+        }
+    }
+}
+
+void IsometricDisplay::callAStar(std::pair<int,int> goal)
+{
+    if (this->focused_unit &&
+        goal.first >= 0 && goal.first < this->space->getWidth() &&
+        goal.second >= 0 && goal.second < this->space->getWidth())
+    {
+        this->focused_unit_pf->generatePath(std::pair<int,int>(this->focused_unit->getW(),this->focused_unit->getD()), goal);
     }
 }
 
