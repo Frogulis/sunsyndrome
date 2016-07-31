@@ -87,6 +87,8 @@ private:
     bool** generateWalkableArrayFor(CombatUnit* unit);
     bool keys[ALLEGRO_KEY_MAX];
     int mouse_button_state;
+    ALLEGRO_MOUSE_STATE mouse_state;
+    bool mouse_moved;
     std::shared_ptr<Space> space;
     std::pair<std::vector<CombatUnit*>,std::vector<CombatUnit*> > parties; //first is player party
     float x, y;

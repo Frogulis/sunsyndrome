@@ -7,14 +7,15 @@ IsometricDisplay::IsometricDisplay()
     this->x = 200;
     this->y = 200;
 
-    this->cursor_x = 1;
-    this->cursor_y = 4;
+    this->cursor_x = 0;
+    this->cursor_y = 0;
 
     for (int i = 0; i < ALLEGRO_KEY_MAX; i++)
     {
         this->keys[i] = false;
     }
     this->mouse_button_state = 0;
+    this->mouse_moved = false;
     this->cursor_move_step = 0;
     this->cursor_move_time = 7;
 }
@@ -152,10 +153,23 @@ void IsometricDisplay::runEvents(ALLEGRO_EVENT &ev)
     {
         this->mouse_button_state &= ~(1 << (ev.mouse.button - 1));
     }
+    else if (ev.type == ALLEGRO_EVENT_MOUSE_AXES)
+    {
+        this->mouse_moved = true;
+        this->mouse_state.x = ev.mouse.x;
+        this->mouse_state.y = ev.mouse.y;
+    }
 }
 
 void IsometricDisplay::runLogic()
 {
+    if (this->mouse_moved)
+    {
+        this->mouse_moved = false;
+        this->cursor_y = std::round((this->mouse_state.y - this->y - ((this->mouse_state.x - this->x) / 2) - 18.0 * this->space->getArenaHeight()) / 32);
+        this->cursor_x = std::round((this->mouse_state.y - this->y  - 18.0 * this->space->getArenaHeight()) / 16 - this->cursor_y);
+        setCursorColour();
+    }
     if (this->keys[ALLEGRO_KEY_W])
     {
         this->changeOffset(0, -5);
