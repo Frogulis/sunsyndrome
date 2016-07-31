@@ -73,10 +73,10 @@
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1469891149 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1469947987 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1469891031 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1469948640 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	<memory>
 	<allegro5/allegro.h>

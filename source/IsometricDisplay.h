@@ -77,17 +77,26 @@ public:
     void draw();
     bool load(std::string name);
     void setSpace(Space* space);
+    void setCursorMoveTime(int value);
     std::shared_ptr<Space> getSpacePtr();
     void changeOffset(float x, float y);
     void runEvents(ALLEGRO_EVENT &ev);
     void runLogic();
 private:
+    int mode; //0 = out of unit, 1 = move select, 2 = target select, 3 = animation (no inputs)
     bool** generateWalkableArrayFor(CombatUnit* unit);
     bool keys[ALLEGRO_KEY_MAX];
     int mouse_button_state;
     std::shared_ptr<Space> space;
     std::pair<std::vector<CombatUnit*>,std::vector<CombatUnit*> > parties; //first is player party
     float x, y;
+    void setCursorColour();
+    int cursorOverUnit(); //-1 ally, 0 no, 1 enemy
+    int cursor_x, cursor_y; //tile cursor in tile units
+    JH::HashTable<std::string,ALLEGRO_BITMAP*> cursors;
+    int cursor_move_step;
+    int cursor_move_time;
+    ALLEGRO_BITMAP* cur_cursor; //cursor currently in use
 };
 
 #endif // __ISOMETRICDISPLAYH_GUARD
