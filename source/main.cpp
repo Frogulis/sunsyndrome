@@ -2,6 +2,9 @@
 #include <string>
 #include <functional>
 
+#include <cstdlib>
+#include <cstdio>
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
@@ -155,6 +158,14 @@ int main(int argc, char** argv)
     if (!fps_timer)
     {
         std::cout << "Failed to create timer.";
+        return -1;
+    }
+
+    ALLEGRO_TIMER* count_timer = al_create_timer(1.0);
+    if (!count_timer)
+    {
+        std::cout << "Failed to create count timer.";
+        return -1;
     }
 
 
@@ -173,6 +184,7 @@ int main(int argc, char** argv)
 
 
     al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+    al_register_event_source(eq, al_get_timer_event_source(count_timer));
     al_register_event_source(eq, al_get_keyboard_event_source());
     al_register_event_source(eq, al_get_mouse_event_source());
     al_register_event_source(eq, al_get_display_event_source(main_window));
@@ -185,7 +197,17 @@ int main(int argc, char** argv)
     }
 
     bool ready_to_draw = false;
+    bool ready_to_draw_fps = false;
     al_start_timer(fps_timer);
+    al_start_timer(count_timer);
+    int fps_count = 0;
+
+    ALLEGRO_FONT* fps_font = al_load_ttf_font("resources/fonts/MontereyFLF.ttf", 11, 0);
+    if (!fps_font)
+    {
+        std::cout << "Failed to load font for fps counter!";
+        return -1;
+    }
 
     Actor a;
     a.loadByName("shadowman");
@@ -198,7 +220,14 @@ int main(int argc, char** argv)
             al_get_next_event(eq, &ev);
             if (ev.type == ALLEGRO_EVENT_TIMER)
             {
-                ready_to_draw = true;
+                if (ev.timer.source == fps_timer)
+                {
+                    ready_to_draw = true;
+                }
+                else if (ev.timer.source == count_timer)
+                {
+                    ready_to_draw_fps = true;
+                }
             }
             else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             {
@@ -223,11 +252,21 @@ int main(int argc, char** argv)
         }
         if (ready_to_draw)
         {
+            fps_count++;
             base.runLogic();
             base.runDisplay();
+            char buffer[25];
+            if (ready_to_draw_fps)
+            {
+                sprintf(buffer, "%d", fps_count);
+                fps_count = 0;
+                ready_to_draw_fps = false;
+            }
+            al_draw_text(fps_font, al_map_rgb(0,255,0), 5, 5, 0, buffer);
             al_flip_display();
             ready_to_draw = false;
         }
+
     }
 }
 
