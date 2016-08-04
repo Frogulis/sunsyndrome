@@ -15,6 +15,11 @@ public:
             al_destroy_bitmap(*i);
         }
     }
+    void setNatural(bool val)
+    {
+        ///if true, adds randomness to animation times
+        this->natural = val;
+    }
     void setAnimation(std::vector<int> time_per_frame, std::vector<ALLEGRO_BITMAP*> frames)
     {
         this->time_per_frame = time_per_frame;
@@ -27,7 +32,7 @@ public:
     }
     ALLEGRO_BITMAP* getFrame()
     {
-        if (this->cur_time == this->time_per_frame[this->cur_frame])
+        if (this->cur_time >= this->time_per_frame[this->cur_frame])
         {
             if (this->cur_frame == this->frames.size() - 1) //last frame
             {
@@ -37,6 +42,10 @@ public:
             this->cur_frame++;
             this->cur_time = 0;
         }
+        if (this->natural)
+        {
+            this->cur_time += rand() % 2;
+        }
         this->cur_time++;
         return this->frames[this->cur_frame];
     }
@@ -45,6 +54,7 @@ private:
     int cur_frame;
     std::vector<int> time_per_frame;
     std::vector<ALLEGRO_BITMAP*> frames;
+    bool natural;
 };
 
 Actor::Actor()
@@ -99,6 +109,8 @@ bool Actor::loadByName(std::string actor_name)
     x_size = JH::StringUtils::stringToInt(tokens[0].content);
     y_size = JH::StringUtils::stringToInt(tokens[2].content);
 
+    bool nat = false;
+
     for (std::vector<JH::Tokenizer::Token>::iterator i = tokens.begin() + 4; i != tokens.end(); i++)
     {
         //std::cout << "~" << i->type << " " << i->content << "\n";
@@ -124,6 +136,7 @@ bool Actor::loadByName(std::string actor_name)
                 frames.push_back(al_clone_bitmap(al_create_sub_bitmap(sheet, i->first * x_size, i->second * y_size, x_size, y_size)));
             }
             temp->setAnimation(time_per_frame, frames);
+            temp->setNatural(nat);
             this->animations.add(name, temp);
             coords.clear();
             time_per_frame.clear();
@@ -160,11 +173,21 @@ bool Actor::loadByName(std::string actor_name)
                 }
             }
         }
-        else if (stage == 2) //
+        else if (stage == 2) //lengths
         {
             if (i->type == "number")
             {
                 time_per_frame.push_back(JH::StringUtils::stringToInt(i->content));
+            }
+        }
+        else if (stage == 3) //natural
+        {
+            if (i->type == "word")
+            {
+                if (i->content == "n")
+                {
+                    nat = true;
+                }
             }
         }
 
@@ -173,6 +196,7 @@ bool Actor::loadByName(std::string actor_name)
     try
     {
         this->def_animation = this->animations.get("idle");
+        this->cur_animation = this->def_animation;
     }
     catch (JH::HTElementNotFoundException &e)
     {
@@ -255,4 +279,10 @@ void Actor::setX(float x)
 void Actor::setY(float y)
 {
     this->y = y;
+}
+
+void Actor::setXYFromCoords(int x, int y)
+{
+    this->x = 32.0 * (x - y);
+    this->y = 16.0 * (x + y);
 }

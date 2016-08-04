@@ -36,13 +36,44 @@ void IsometricDisplay::draw()
         {
             for (int cd = 0; cd < d; cd++)
             {
-                ALLEGRO_BITMAP* cur = space->getImageFromLocation(cw,cd,ch);
-                if (cur)
+                this->drawCallWithCoords(space->getImageFromLocation(cw,cd,ch), cw, cd, ch);
+                if (ch == this->space->getArenaHeight())
                 {
-                    al_draw_bitmap(cur,
-                                   this->x + 32.0 * (cw - cd) - al_get_bitmap_width(cur)/2,
-                                   this->y + 16.0 * (cw + cd) + 18.0 * ch - al_get_bitmap_height(cur)/2,
-                                   0);
+                    for (unsigned int a = 0; a < this->objects.size(); a++)
+                    {
+                        if (this->objects[a].first.first == cw && this->objects[a].first.second == cd)
+                        {
+                            this->drawCallWithCoords(this->objects[a].second->getFrame(), cw, cd, this->space->getArenaHeight());
+                        }
+                    }
+                    for (std::vector<CombatUnit*>::iterator ally = this->parties.first.begin(); ally != this->parties.first.end(); ally++)
+                    {
+                        if ((*ally)->getW() == cw && (*ally)->getD() == cd)
+                        {
+                            ALLEGRO_BITMAP* sprite = (*ally)->actor.getFrame();
+                            if (sprite)
+                            {
+                                al_draw_bitmap(sprite,
+                                               this->x + (*ally)->actor.getX() - al_get_bitmap_width(sprite)/2,
+                                               this->y + (*ally)->actor.getY() + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(sprite)/2,
+                                               0);
+                            }
+                        }
+                    }
+                    for (std::vector<CombatUnit*>::iterator enemy = this->parties.second.begin(); enemy != this->parties.second.end(); enemy++)
+                    {
+                        if ((*enemy)->getW() == cw && (*enemy)->getD() == cd)
+                        {
+                            ALLEGRO_BITMAP* sprite = (*enemy)->actor.getFrame();
+                            if (sprite)
+                            {
+                                al_draw_bitmap(sprite,
+                                               this->x + (*enemy)->actor.getX() - al_get_bitmap_width(sprite)/2,
+                                               this->y + (*enemy)->actor.getY() + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(sprite)/2,
+                                               0);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -70,21 +101,24 @@ void IsometricDisplay::draw()
                     {
                         cursor_to_use = this->cursors.get("white");
                     }
-                    al_draw_bitmap(cursor_to_use,
-                                   this->x + 32.0 * (tile->first - tile->second) - al_get_bitmap_width(cursor_to_use)/2,
-                                   this->y + 16.0 * (tile->first + tile->second) + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(cursor_to_use)/2,
-                                   0);
+                    this->drawCallWithCoords(cursor_to_use, tile->first, tile->second, this->space->getArenaHeight());
                 }
             }
         }
-
     }
 
-    al_draw_bitmap(this->cur_cursor,
-                   this->x + 32.0 * (this->cursor_x - this->cursor_y) - al_get_bitmap_width(this->cur_cursor)/2,
-                   this->y + 16.0 * (this->cursor_x + this->cursor_y) + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(this->cur_cursor)/2,
-                   0);
+    this->drawCallWithCoords(this->cur_cursor, this->cursor_x, this->cursor_y, this->space->getArenaHeight());
+}
 
+void IsometricDisplay::drawCallWithCoords(ALLEGRO_BITMAP* sprite, float w, float d, float h)
+{
+    if (sprite)
+    {
+        al_draw_bitmap(sprite,
+                       this->x + 32.0 * (w - d) - al_get_bitmap_width(sprite)/2,
+                       this->y + 16.0 * (w + d) + 18.0 * h - al_get_bitmap_height(sprite)/2,
+                       0);
+    }
 }
 
 bool IsometricDisplay::load(std::string name)
@@ -95,14 +129,19 @@ bool IsometricDisplay::load(std::string name)
         return false;
     }
     this->space.reset(s);
-    CombatUnit* temp = CombatUnit::getInstance("shadowman");
-    temp->setW(1);
-    temp->setD(4);
-    temp->setH(this->space->getArenaHeight());
-    this->parties.first.push_back(temp);
+    for (int i = 0; i < 2; i++)
+    {
+        CombatUnit* temp = CombatUnit::getInstance("shadowman");
+        temp->setW(1);
+        temp->setD(4-i);
+        temp->setH(this->space->getArenaHeight());
+        temp->alignActorToCoords();
+        this->parties.first.push_back(temp);
+    }
     CombatUnit* temp2 = CombatUnit::getInstance("shadowman");
     temp2->setW(3);
     temp2->setD(4);
+    temp2->alignActorToCoords();
     this->parties.second.push_back(temp2);
     bool** res = this->generateWalkableArrayFor(this->parties.first[0]);
     for (int y = 0; y < this->space->getDepth(); y++)
@@ -119,6 +158,11 @@ bool IsometricDisplay::load(std::string name)
             }
         }
         std::cout << "\n";
+    }
+
+    if (!this->loadObjects(name))
+    {
+        return false;
     }
 
     ALLEGRO_BITMAP* red_c = al_load_bitmap("resources/sprites/UI/cursor/cursor_red.png");
@@ -341,6 +385,42 @@ void IsometricDisplay::setCursorColour()
     }
 }
 
+bool IsometricDisplay::loadObjects(std::string name)
+{
+    name = "resources/levels/" + name + "/objects";
+    std::ifstream f;
+    f.open(name);
+    if (!f)
+    {
+        std::cout << "Failed to load objects at " << name << ".\n";
+        return false;
+    }
+    while (!f.eof())
+    {
+        Actor* temp = new Actor();
+        std::string a_name;
+        int x, y;
+        if (!(f >> a_name >> x >> y))
+        {
+            while (f.get() != '\n' && !f.eof())
+            {
+                //boop
+            }
+        }
+        if (f.eof())
+        {
+            return true;
+        }
+        std::cout << "$" << a_name << "#" << x << "#" << y << "\n";
+        temp->loadByName(a_name);
+        temp->setX(32.0 * (x - y));
+        temp->setY(16.0 * (x + y));
+        temp->startAnimation("idle");
+        this->objects.push_back(std::pair<std::pair<int,int>,Actor*>(std::pair<int,int>(x,y), temp));
+    }
+    return true;
+}
+
 void IsometricDisplay::callAStar(std::pair<int,int> goal)
 {
     if (this->focused_unit &&
@@ -406,6 +486,10 @@ bool** IsometricDisplay::generateWalkableArrayFor(IsometricDisplay::CombatUnit* 
         {
             result[(*i)->getW()][(*i)->getD()] = false;
         }
+    }
+    for (unsigned int i = 0; i < this->objects.size(); i++)
+    {
+        result[this->objects[i].first.first][this->objects[i].first.second] = false;
     }
     return result;
 }
@@ -674,6 +758,11 @@ void IsometricDisplay::CombatUnit::takeTurn()
     }
 }
 
+void IsometricDisplay::CombatUnit::alignActorToCoords()
+{
+    this->actor.setXYFromCoords(this->w, this->d);
+}
+
 class Unit_Shadowman : public IsometricDisplay::CombatUnit
 {
     ///does increasing damage with further hits on the same target, benefits a 'pursuer' playstyle
@@ -706,6 +795,7 @@ IsometricDisplay::CombatUnit* IsometricDisplay::CombatUnit::getInstance(std::str
     if (unit_class == "shadowman")
     {
         IsometricDisplay::CombatUnit* temp = new Unit_Shadowman;
+        temp->actor.loadByName("shadowman");
         return temp;
     }
     else if (unit_class == "grunt")

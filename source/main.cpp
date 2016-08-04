@@ -26,89 +26,9 @@ void safe_exit();
 
 int main(int argc, char** argv)
 {
-    /*bool** ar = new bool*[10];
-    for (int i = 0; i < 10; i++)
-    {
-        ar[i] = new bool[10];
-        for (int j = 0; j < 10; j++)
-        {
-            if (i == 5 && j > 3)
-            {
-                ar[i][j] = false;
-            }
-            else if (j == 3 && i > 0 && i < 7)
-            {
-                ar[i][j] = false;
-            }
-            else
-            {
-                ar[i][j] = true;
-            }
-        }
-    }
+    time_t t;
 
-    JH::AStar pf(ar, 10, 10);
-    pf.generatePath(std::pair<int,int>(2,7), std::pair<int,int>(8,7));
-
-    if (!pf.getPath().size())
-    {
-        std::cout << "no solution.";
-    }
-
-    for (int c = 0; c < pf.getPath().size(); c++)
-    {
-        for (int y = 0; y < 10; y++)
-        {
-            for (int x = 0; x < 10; x++)
-            {
-                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
-                {
-                    std::cout << 'O';
-                }
-                else if (!ar[x][y])
-                {
-                    std::cout << char(178);
-                }
-                else
-                {
-                    std::cout << char(176);
-                }
-            }
-            std::cout << "\n";
-        }
-        std::cout << "\n";
-    }
-
-    for (int y = 0; y < 10; y++)
-    {
-        for (int x = 0; x < 10; x++)
-        {
-            bool next = false;
-            for (int c = 0; c < pf.getPath().size(); c++)
-            {
-                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
-                {
-                    std::cout << 'O';
-                    next = true;
-                }
-            }
-            if (!next)
-            {
-                if (!ar[x][y])
-                {
-                    std::cout << char(178);
-                }
-                else
-                {
-                    std::cout << char(176);
-                }
-            }
-        }
-        std::cout << "\n";
-    }
-
-    return 0;
-    */
+    srand((unsigned) time(&t));
 
     if (!al_init())
     {
@@ -168,7 +88,6 @@ int main(int argc, char** argv)
         return -1;
     }
 
-
     if (!al_install_keyboard())
     {
         std::cout << "Failed to install keyboard.";
@@ -209,9 +128,6 @@ int main(int argc, char** argv)
         return -1;
     }
 
-    Actor a;
-    a.loadByName("shadowman");
-
     while (true)
     {
         while (!al_event_queue_is_empty(eq))
@@ -250,6 +166,7 @@ int main(int argc, char** argv)
             }
             base.runEvents(ev);
         }
+
         if (ready_to_draw)
         {
             fps_count++;

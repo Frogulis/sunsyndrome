@@ -2,7 +2,10 @@
 #define __ISOMETRICDISPLAYH_GUARD
 
 #include <iostream>
+#include <fstream>
 #include <memory>
+
+#include <cstdlib>
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -11,6 +14,7 @@
 #include "Space.h"
 #include "HashTable.h"
 #include "AStar.h"
+#include "Actor.h"
 
 class IsometricDisplay : public IDisplay
 {
@@ -62,6 +66,8 @@ public:
         void applyBuff(Buff* b);
         void useSkill(unsigned int number, CombatUnit* target);
         void takeTurn(); //applies buffs etc.
+        void alignActorToCoords();
+        Actor actor;
     protected:
         CombatUnit();
         int w, d, h;
@@ -84,19 +90,22 @@ public:
     void runLogic();
 private:
     int mode; //0 = out of unit, 1 = move select, 2 = target select, 3 = animation (no inputs)
+    void drawCallWithCoords(ALLEGRO_BITMAP* sprite, float w, float d, float h);
+    bool loadObjects(std::string name);
     bool** generateWalkableArrayFor(CombatUnit* unit);
+    void setCursorColour();
+    int cursorOverUnit(); //-1 ally, 0 no, 1 enemy
     bool keys[ALLEGRO_KEY_MAX];
     int mouse_button_state;
     ALLEGRO_MOUSE_STATE mouse_state;
     bool mouse_moved;
     std::shared_ptr<Space> space;
+    std::vector<std::pair<std::pair<int,int>, Actor*> > objects;
     std::pair<std::vector<CombatUnit*>,std::vector<CombatUnit*> > parties; //first is player party
     CombatUnit* focused_unit;
     void callAStar(std::pair<int,int> goal);
     JH::AStar* focused_unit_pf;
     float x, y;
-    void setCursorColour();
-    int cursorOverUnit(); //-1 ally, 0 no, 1 enemy
     int cursor_x, cursor_y; //tile cursor in tile units
     bool cursor_moved;
     JH::HashTable<std::string,ALLEGRO_BITMAP*> cursors;

@@ -20,6 +20,7 @@ class Actor
 {
 public:
     Actor();
+    Actor(Actor& a);
     ~Actor();
     bool loadByName(std::string actor_name);
     void startAnimation(std::string anim_name);
@@ -30,6 +31,7 @@ public:
     float getY();
     void setX(float x);
     void setY(float y);
+    void setXYFromCoords(int x, int y);
     void setDefaultAnimation(std::string anim_name);
 private:
     class Animation;

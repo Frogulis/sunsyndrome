@@ -1,10 +1,12 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1469961350 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1470313237 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
+	<cstdlib>
+	<cstdio>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	<allegro5/allegro_primitives.h>
@@ -73,25 +75,28 @@
 	<allegro5/allegro.h>
 	"ImageList.h"
 
-1469972065 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
+1470319907 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1469966842 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1470312864 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
+	<fstream>
 	<memory>
+	<cstdlib>
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 	"IDisplay.h"
 	"Space.h"
 	"HashTable.h"
 	"AStar.h"
+	"Actor.h"
 
 1466001505 
 
-1469889189 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+1470037425 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
 	"Actor.h"
 
-1469888425 d:\code projects\cpp\sunsyndrome\source\actor.h
+1470320054 d:\code projects\cpp\sunsyndrome\source\actor.h
 	<exception>
 	<iostream>
 	<string>
@@ -108,9 +113,10 @@
 1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
 	"HashTable.h"
 
-1469772186 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+1470018963 d:\code projects\cpp\sunsyndrome\source\hashtable.h
 	<functional>
 	<iostream>
+	<memory>
 	"JHException.h"
 
 1469772186 d:\code projects\cpp\sunsyndrome\source\stringutils.h
@@ -178,6 +184,6 @@
 	<list>
 	<cmath>
 
-1469971435 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
+1469972101 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
 	"AStar.h"
 
