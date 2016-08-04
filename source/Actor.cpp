@@ -8,6 +8,18 @@ public:
         this->cur_frame = 0;
         this->cur_time = 0;
     }
+    ~Animation()
+    {
+        for (std::vector<ALLEGRO_BITMAP*>::iterator i = this->frames.begin(); i != this->frames.end(); i++)
+        {
+            al_destroy_bitmap(*i);
+        }
+    }
+    void setNatural(bool val)
+    {
+        ///if true, adds randomness to animation times
+        this->natural = val;
+    }
     void setAnimation(std::vector<int> time_per_frame, std::vector<ALLEGRO_BITMAP*> frames)
     {
         this->time_per_frame = time_per_frame;
@@ -20,7 +32,7 @@ public:
     }
     ALLEGRO_BITMAP* getFrame()
     {
-        if (this->cur_time == this->time_per_frame[this->cur_frame])
+        if (this->cur_time >= this->time_per_frame[this->cur_frame])
         {
             if (this->cur_frame == this->frames.size() - 1) //last frame
             {
@@ -30,6 +42,10 @@ public:
             this->cur_frame++;
             this->cur_time = 0;
         }
+        if (this->natural)
+        {
+            this->cur_time += rand() % 3;
+        }
         this->cur_time++;
         return this->frames[this->cur_frame];
     }
@@ -38,13 +54,22 @@ private:
     int cur_frame;
     std::vector<int> time_per_frame;
     std::vector<ALLEGRO_BITMAP*> frames;
+    bool natural;
 };
 
 Actor::Actor()
 {
     this->cur_animation = nullptr;
+    this->def_animation = nullptr;
     this->x_off = 0;
     this->y_off = 0;
+    this->x = 0;
+    this->y = 0;
+}
+
+Actor::~Actor()
+{
+
 }
 
 bool Actor::loadByName(std::string actor_name)
@@ -62,6 +87,7 @@ bool Actor::loadByName(std::string actor_name)
     if (!ssinfo.is_open())
     {
         std::cout << "Can't load ssinfo for " << actor_name << ".\n";
+        al_destroy_bitmap(sheet);
         return false;
     }
 
@@ -83,6 +109,8 @@ bool Actor::loadByName(std::string actor_name)
     x_size = JH::StringUtils::stringToInt(tokens[0].content);
     y_size = JH::StringUtils::stringToInt(tokens[2].content);
 
+    bool nat = false;
+
     for (std::vector<JH::Tokenizer::Token>::iterator i = tokens.begin() + 4; i != tokens.end(); i++)
     {
         //std::cout << "~" << i->type << " " << i->content << "\n";
@@ -98,6 +126,7 @@ bool Actor::loadByName(std::string actor_name)
 
                 std::cout << coords.size() << "-" << time_per_frame.size() << ":\n";
                 std::cout << "Number of frames and times don't match in ssinfo for " << actor_name << ": " << name << ".\n";
+                al_destroy_bitmap(sheet);
                 return false;
             }
             Animation* temp = new Animation;
@@ -107,6 +136,7 @@ bool Actor::loadByName(std::string actor_name)
                 frames.push_back(al_clone_bitmap(al_create_sub_bitmap(sheet, i->first * x_size, i->second * y_size, x_size, y_size)));
             }
             temp->setAnimation(time_per_frame, frames);
+            temp->setNatural(nat);
             this->animations.add(name, temp);
             coords.clear();
             time_per_frame.clear();
@@ -118,6 +148,7 @@ bool Actor::loadByName(std::string actor_name)
             if (i->type != "word")
             {
                 std::cout << "Improperly formatted ssinfo for " << actor_name << ".\n";
+                al_destroy_bitmap(sheet);
                 return false;
             }
             else
@@ -142,16 +173,37 @@ bool Actor::loadByName(std::string actor_name)
                 }
             }
         }
-        else if (stage == 2) //
+        else if (stage == 2) //lengths
         {
             if (i->type == "number")
             {
                 time_per_frame.push_back(JH::StringUtils::stringToInt(i->content));
             }
         }
+        else if (stage == 3) //natural
+        {
+            if (i->type == "word")
+            {
+                if (i->content == "n")
+                {
+                    nat = true;
+                }
+            }
+        }
 
     }
-
+    al_destroy_bitmap(sheet);
+    try
+    {
+        this->def_animation = this->animations.get("idle");
+        this->cur_animation = this->def_animation;
+    }
+    catch (JH::HTElementNotFoundException &e)
+    {
+        std::cout << e.what() << "\n";
+        std::cout << "No idle animation exists for " << actor_name << "\n";
+        return false;
+    }
     return true;
 }
 
@@ -169,6 +221,20 @@ void Actor::startAnimation(std::string anim_name)
     }
 }
 
+void Actor::setDefaultAnimation(std::string anim_name)
+{
+    try
+    {
+        this->def_animation = this->animations.get(anim_name);
+    }
+    catch (JH::HTElementNotFoundException &e)
+    {
+        std::cout << e.what() << "\n";
+        std::cout << anim_name << " is not a valid animation name\n";
+        this->def_animation = this->animations.get("idle");
+    }
+}
+
 ALLEGRO_BITMAP* Actor::getFrame()
 {
     ALLEGRO_BITMAP* frame = nullptr;
@@ -178,9 +244,45 @@ ALLEGRO_BITMAP* Actor::getFrame()
     }
     catch (std::exception& e)
     {
-        this->cur_animation = this->animations.get("idle");
+        this->cur_animation = this->def_animation;
         this->cur_animation->startAnimation();
         frame = this->cur_animation->getFrame();
     }
     return frame;
+}
+
+float Actor::getXOffset()
+{
+    return this->x_off;
+}
+
+float Actor::getYOffset()
+{
+    return this->y_off;
+}
+
+float Actor::getX()
+{
+    return this->x;
+}
+
+float Actor::getY()
+{
+    return this->y;
+}
+
+void Actor::setX(float x)
+{
+    this->x = x;
+}
+
+void Actor::setY(float y)
+{
+    this->y = y;
+}
+
+void Actor::setXYFromCoords(int x, int y)
+{
+    this->x = 32.0 * (x - y);
+    this->y = 16.0 * (x + y);
 }

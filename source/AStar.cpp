@@ -79,6 +79,10 @@ JH::UndirectedGraph2D::Node* JH::UndirectedGraph2D::operator()(int x, int y)
 
 JH::UndirectedGraph2D::Node* JH::UndirectedGraph2D::getNode(int x, int y)
 {
+    if (this->nodes.size() == 0)
+    {
+        return nullptr;
+    }
     for (std::vector<Node*>::iterator i = this->nodes.begin(); i != this->nodes.end(); i++)
     {
         if ((*i)->grid_coords == std::pair<int,int>(x,y))
@@ -143,6 +147,8 @@ void JH::AStar::generatePath(std::pair<int,int> start, std::pair<int,int> goal)
 
     std::vector<PNode*> open;
     std::vector<PNode*> closed;
+
+    result.clear();
 
     PNode* first = new PNode;
     first->parent = nullptr;

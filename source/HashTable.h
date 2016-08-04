@@ -3,6 +3,7 @@
 
 #include <functional>
 #include <iostream>
+#include <memory>
 
 #include "JHException.h"
 
@@ -46,9 +47,9 @@ namespace JH
         unsigned int length();
     private:
         std::hash<KeyT> h;
-        KeyT* keys;
-        DataT* data;
-        bool* taken_spots;
+        std::unique_ptr<KeyT[]> keys;
+        std::unique_ptr<DataT[]> data;
+        std::unique_ptr<bool[]> taken_spots;
         unsigned int filled;
         unsigned int data_length;
         unsigned int section_size;
@@ -58,9 +59,6 @@ namespace JH
 template <class KeyT, class DataT>
 JH::HashTable<KeyT,DataT>::HashTable()
 {
-    this->keys = nullptr;
-    this->data = nullptr;
-    this->taken_spots = nullptr;
     this->data_length = 0;
     this->filled = 0;
     this->section_size = 100;
@@ -69,9 +67,12 @@ JH::HashTable<KeyT,DataT>::HashTable()
 template <class KeyT, class DataT>
 JH::HashTable<KeyT,DataT>::~HashTable()
 {
-    delete [] this->data;
-    delete [] this->taken_spots;
-    delete [] this->keys;
+    /*if (this->data)
+        delete [] this->data;
+    if (this->taken_spots)
+        delete [] this->taken_spots;
+    if (this->keys)
+        delete [] this->keys;*/
 }
 
 template <class KeyT, class DataT>
@@ -84,10 +85,10 @@ void JH::HashTable<KeyT,DataT>::add(KeyT key, DataT unit)
 
     if (!this->data)
     {
-        this->keys = new KeyT[this->section_size];
-        this->data = new DataT[this->section_size];
+        this->keys.reset(new KeyT[this->section_size]);
+        this->data.reset(new DataT[this->section_size]);
         this->data_length = this->section_size;
-        this->taken_spots = new bool[this->section_size];
+        this->taken_spots.reset(new bool[this->section_size]);
         for (unsigned int i = 0; i < this->data_length; i++)
         {
             this->taken_spots[i] = false;
@@ -95,12 +96,12 @@ void JH::HashTable<KeyT,DataT>::add(KeyT key, DataT unit)
     }
     else if (this->filled > this->data_length * 0.9) //extending when 90% or more
     {
-        KeyT* ktemp = this->keys;
-        DataT* temp = this->data;
-        bool* btemp = this->taken_spots;
-        this->keys = new KeyT[this->data_length + this->section_size];
-        this->data = new DataT[this->data_length + this->section_size];
-        this->taken_spots = new bool[this->data_length + this->section_size];
+        std::unique_ptr<KeyT[]> ktemp = std::move(this->keys);
+        std::unique_ptr<DataT[]> temp = std::move(this->data);
+        std::unique_ptr<bool[]> btemp = std::move(this->taken_spots);
+        this->keys.reset(new KeyT[this->data_length + this->section_size]);
+        this->data.reset(new DataT[this->data_length + this->section_size]);
+        this->taken_spots.reset(new bool[this->data_length + this->section_size]);
         for (unsigned int i = 0; i < this->data_length + this->section_size; i++)
         {
             this->taken_spots[i] = false;
@@ -131,9 +132,6 @@ void JH::HashTable<KeyT,DataT>::add(KeyT key, DataT unit)
             }
         }
         this->data_length += this->section_size;
-        delete temp;
-        delete btemp;
-        delete ktemp;
     }
     //now we have to actually add it
     size_t my_index = this->h(key) % this->data_length;
@@ -208,6 +206,11 @@ DataT JH::HashTable<KeyT,DataT>::get(KeyT key)
     Returns bucket for the given key.
     Throws HTElementNotFoundException if key is not found
     ***/
+
+    if (!this->data_length)
+    {
+        throw JH::HTElementNotFoundException("HashTable empty!");
+    }
 
     size_t my_index = this->h(key) % this->data_length;
 

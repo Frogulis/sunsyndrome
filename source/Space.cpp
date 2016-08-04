@@ -6,6 +6,12 @@ Space::Space()
     this->w = 0;
     this->d = 0;
     this->h = 0;
+    this->arena_height = 0;
+}
+
+Space::~Space()
+{
+    this->deleteIDArray();
 }
 
 bool Space::loadFromFile(std::string filename)
@@ -25,7 +31,7 @@ bool Space::loadFromFile(std::string filename)
     f.open(filename);
     if (!f.is_open())
     {
-        std::cout << "Couldn't load level from " << filename << ".\n";
+        std::cout << "Can't open file at " << filename << ".\n";
         return false;
     }
     f >> mw >> md >> mh;
@@ -48,6 +54,8 @@ bool Space::loadFromFile(std::string filename)
     int cw = 0;
     int cd = -1;
     int ch = -1;
+
+    bool has_walkable = false;
 
     f.ignore(256, '\n');
     //f.get(); //discarding the space
@@ -74,12 +82,15 @@ bool Space::loadFromFile(std::string filename)
             {
                 std::cout << "Level at " << filename << " has incorrect formatting.\n";
                 std::cout << cw << cd << ch;
+                this->deleteIDArray();
                 return false;
             }
             this->id_array[cw][cd][ch].id = current_number;
             if (c == '+')
             {
                 this->id_array[cw][cd][ch].walkable = true;
+                has_walkable = true;
+                this->arena_height = ch;
             }
             cw += 1;
             current_number = 0;
@@ -91,6 +102,14 @@ bool Space::loadFromFile(std::string filename)
             //std::cout << "-*" << int(current_number) < "\n";
         }
     }
+
+    if (!has_walkable)
+    {
+        std::cout << "Level at " << filename << " has no walkable tiles.\n";
+        this->deleteIDArray();
+        return false;
+    }
+
     std::cout << "Successfully loaded from " << filename << "\n";
     /*for (int i = 0; i < mh; i++)
     {
@@ -122,7 +141,7 @@ bool Space::getWalkableFromLocation(int w, int d, int h)
     {
         return false;
     }
-    return this->image_list.getImageFromID(this->id_array[w][d][h].walkable);
+    return this->id_array[w][d][h].walkable;
 }
 
 int Space::getWidth()
@@ -140,7 +159,29 @@ int Space::getHeight()
     return this->h;
 }
 
+int Space::getArenaHeight()
+{
+    return this->arena_height;
+}
+
 bool Space::within_array_bounds(int w, int d, int h)
 {
     return !(w >= this->w || d >= this->d || h >= this->h);
+}
+
+void Space::deleteIDArray()
+{
+    if (this->id_array)
+    {
+        for (int i = 0; i < this->w; i++)
+        {
+            for (int j = 0; j < this->d; j++)
+            {
+                delete [] this->id_array[i][j];
+            }
+            delete [] this->id_array[i];
+        }
+        delete [] this->id_array;
+    }
+    this->id_array = nullptr;
 }

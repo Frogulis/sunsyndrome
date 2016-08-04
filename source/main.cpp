@@ -2,6 +2,9 @@
 #include <string>
 #include <functional>
 
+#include <cstdlib>
+#include <cstdio>
+
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
@@ -19,128 +22,13 @@
 #include "StringUtils.h"
 #include "AStar.h"
 
+void safe_exit();
+
 int main(int argc, char** argv)
 {
-    bool** ar = new bool*[10];
-    for (int i = 0; i < 10; i++)
-    {
-        ar[i] = new bool[10];
-        for (int j = 0; j < 10; j++)
-        {
-            if (i == 5 && j > 3)
-            {
-                ar[i][j] = false;
-            }
-            else if (j == 3 && i > 0 && i < 7)
-            {
-                ar[i][j] = false;
-            }
-            else
-            {
-                ar[i][j] = true;
-            }
-        }
-    }
+    time_t t;
 
-    JH::AStar pf(ar, 10, 10);
-    pf.generatePath(std::pair<int,int>(2,7), std::pair<int,int>(8,7));
-
-    if (!pf.getPath().size())
-    {
-        std::cout << "no solution.";
-    }
-
-    /*for (int c = 0; c < pf.getPath().size(); c++)
-    {
-        for (int y = 0; y < 10; y++)
-        {
-            for (int x = 0; x < 10; x++)
-            {
-                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
-                {
-                    std::cout << 'O';
-                }
-                else if (!ar[x][y])
-                {
-                    std::cout << char(178);
-                }
-                else
-                {
-                    std::cout << char(176);
-                }
-            }
-            std::cout << "\n";
-        }
-        std::cout << "\n";
-    }*/
-
-    for (int y = 0; y < 10; y++)
-    {
-        for (int x = 0; x < 10; x++)
-        {
-            bool next = false;
-            for (int c = 0; c < pf.getPath().size(); c++)
-            {
-                if (pf.getPath()[c].first == x && pf.getPath()[c].second == y)
-                {
-                    std::cout << 'O';
-                    next = true;
-                }
-            }
-            if (!next)
-            {
-                if (!ar[x][y])
-                {
-                    std::cout << char(178);
-                }
-                else
-                {
-                    std::cout << char(176);
-                }
-            }
-        }
-        std::cout << "\n";
-    }
-
-    return 0;
-
-    Game::CombatUnit* a = Game::CombatUnit::getInstance("shadowman");
-    Game::CombatUnit* b = Game::CombatUnit::getInstance("grunt");
-
-    class Poison : public Game::CombatUnit::Buff
-    {
-    public:
-        Poison(int length) : Game::CombatUnit::Buff::Buff(length) {}
-        void turnEffect(Game::CombatUnit* user)
-        {
-            user->setStat("hp", user->getStat("hp") - 2);
-        }
-    };
-
-    class ZenoToxin : public Game::CombatUnit::Buff
-    {
-    public:
-        ZenoToxin(int length) : Game::CombatUnit::Buff::Buff(length) {}
-        void turnEffect(Game::CombatUnit* user)
-        {
-            user->setStat("hp", user->getStat("hp") / 2);
-        }
-    };
-
-    a->applyBuff(new ZenoToxin(3));
-
-    while (true)
-    {
-        std::cout << "a: " << a->getStat("hp") << " " << a->getStat("damage") << " " << a->getStat("defence") << "\n";
-        std::cout << "b: " << b->getStat("hp") << " " << b->getStat("damage") << " " << b->getStat("defence") << "\n";
-        a->takeTurn();
-        b->takeTurn();
-        //a->useSkill(0, b);
-        //b->useSkill(0, a);
-        std::cin.get();
-    }
-
-    return 0;
+    srand((unsigned) time(&t));
 
     if (!al_init())
     {
@@ -190,27 +78,55 @@ int main(int argc, char** argv)
     if (!fps_timer)
     {
         std::cout << "Failed to create timer.";
+        return -1;
     }
-    al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+
+    ALLEGRO_TIMER* count_timer = al_create_timer(1.0);
+    if (!count_timer)
+    {
+        std::cout << "Failed to create count timer.";
+        return -1;
+    }
 
     if (!al_install_keyboard())
     {
         std::cout << "Failed to install keyboard.";
         return -1;
     }
-    al_register_event_source(eq, al_get_keyboard_event_source());
 
-    if (!al_install_mouse())
+
+    if (!al_install_mouse() || !al_set_mouse_cursor(main_window, al_create_mouse_cursor(al_load_bitmap("resources/sprites/UI/cursor/clicker.png"), 16, 31)))
     {
         std::cout << "Failed to install mouse.";
         return -1;
     }
+
+
+    al_register_event_source(eq, al_get_timer_event_source(fps_timer));
+    al_register_event_source(eq, al_get_timer_event_source(count_timer));
+    al_register_event_source(eq, al_get_keyboard_event_source());
     al_register_event_source(eq, al_get_mouse_event_source());
+    al_register_event_source(eq, al_get_display_event_source(main_window));
 
     Game base;
+    if (!base.init())
+    {
+        std::cout << "Failed to initialise game! Quitting...\n";
+        return -1;
+    }
 
     bool ready_to_draw = false;
+    bool ready_to_draw_fps = false;
     al_start_timer(fps_timer);
+    al_start_timer(count_timer);
+    int fps_count = 0;
+
+    ALLEGRO_FONT* fps_font = al_load_ttf_font("resources/fonts/MontereyFLF.ttf", 11, 0);
+    if (!fps_font)
+    {
+        std::cout << "Failed to load font for fps counter!";
+        return -1;
+    }
 
     while (true)
     {
@@ -220,7 +136,22 @@ int main(int argc, char** argv)
             al_get_next_event(eq, &ev);
             if (ev.type == ALLEGRO_EVENT_TIMER)
             {
-                ready_to_draw = true;
+                if (ev.timer.source == fps_timer)
+                {
+                    ready_to_draw = true;
+                }
+                else if (ev.timer.source == count_timer)
+                {
+                    ready_to_draw_fps = true;
+                }
+            }
+            else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+            {
+                std::cout << "Safely quitting.";
+                al_destroy_display(main_window);
+                al_destroy_event_queue(eq);
+                al_destroy_timer(fps_timer);
+                return 0;
             }
             else if (ev.type == ALLEGRO_EVENT_KEY_DOWN)
             {
@@ -235,12 +166,24 @@ int main(int argc, char** argv)
             }
             base.runEvents(ev);
         }
+
         if (ready_to_draw)
         {
+            fps_count++;
             base.runLogic();
             base.runDisplay();
+            char buffer[25];
+            if (ready_to_draw_fps)
+            {
+                sprintf(buffer, "%d", fps_count);
+                fps_count = 0;
+                ready_to_draw_fps = false;
+            }
+            al_draw_text(fps_font, al_map_rgb(0,255,0), 5, 5, 0, buffer);
             al_flip_display();
             ready_to_draw = false;
         }
+
     }
 }
+
