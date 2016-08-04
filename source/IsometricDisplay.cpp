@@ -143,22 +143,6 @@ bool IsometricDisplay::load(std::string name)
     temp2->setD(4);
     temp2->alignActorToCoords();
     this->parties.second.push_back(temp2);
-    bool** res = this->generateWalkableArrayFor(this->parties.first[0]);
-    for (int y = 0; y < this->space->getDepth(); y++)
-    {
-        for (int x = 0; x < this->space->getWidth(); x++)
-        {
-            if (res[x][y])
-            {
-                std::cout << char(178);
-            }
-            else
-            {
-                std::cout << char(176);
-            }
-        }
-        std::cout << "\n";
-    }
 
     if (!this->loadObjects(name))
     {
@@ -411,7 +395,6 @@ bool IsometricDisplay::loadObjects(std::string name)
         {
             return true;
         }
-        std::cout << "$" << a_name << "#" << x << "#" << y << "\n";
         temp->loadByName(a_name);
         temp->setX(32.0 * (x - y));
         temp->setY(16.0 * (x + y));

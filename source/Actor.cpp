@@ -44,7 +44,7 @@ public:
         }
         if (this->natural)
         {
-            this->cur_time += rand() % 2;
+            this->cur_time += rand() % 3;
         }
         this->cur_time++;
         return this->frames[this->cur_frame];
