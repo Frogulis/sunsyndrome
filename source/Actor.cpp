@@ -110,9 +110,14 @@ bool Actor::loadByName(std::string actor_name)
     x_size = JH::StringUtils::stringToInt(tokens[0].content);
     y_size = JH::StringUtils::stringToInt(tokens[2].content);
 
+    this->x_off = JH::StringUtils::stringToInt(tokens[3].content);
+    this->y_off = JH::StringUtils::stringToInt(tokens[5].content);
+
+    std::cout << "$" << this->x_off << " " << this->y_off << "\n";
+
     bool nat = false;
 
-    for (std::vector<JH::Tokenizer::Token>::iterator i = tokens.begin() + 4; i != tokens.end(); i++)
+    for (std::vector<JH::Tokenizer::Token>::iterator i = tokens.begin() + 6; i != tokens.end(); i++)
     {
         //std::cout << "~" << i->type << " " << i->content << "\n";
         if (i->type == "next_section")

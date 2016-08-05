@@ -54,8 +54,8 @@ void IsometricDisplay::draw()
                             if (sprite)
                             {
                                 al_draw_bitmap(sprite,
-                                               this->x + (*ally)->actor.getX() - al_get_bitmap_width(sprite)/2,
-                                               this->y + (*ally)->actor.getY() + 18.0 * this->space->getArenaHeight() - al_get_bitmap_height(sprite)/2,
+                                               this->x + (*ally)->actor.getX() - (*ally)->actor.getXOffset(),
+                                               this->y + (*ally)->actor.getY() + 18.0 * this->space->getArenaHeight() - (*ally)->actor.getYOffset(),
                                                0);
                             }
                         }
