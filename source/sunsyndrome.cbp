@@ -46,6 +46,7 @@
 		<Unit filename="AStar.h" />
 		<Unit filename="Actor.cpp" />
 		<Unit filename="Actor.h" />
+		<Unit filename="CombatUnit_definitions.cpp" />
 		<Unit filename="DialogueBox.cpp" />
 		<Unit filename="DialogueBox.h" />
 		<Unit filename="Game.cpp" />

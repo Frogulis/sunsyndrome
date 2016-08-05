@@ -120,19 +120,22 @@ public:
 
 IsometricDisplay::CombatUnit* IsometricDisplay::CombatUnit::getInstance(std::string unit_class)
 {
+    IsometricDisplay::CombatUnit* temp;
     if (unit_class == "shadowman")
     {
-        IsometricDisplay::CombatUnit* temp = new Unit_Shadowman;
+        temp = new Unit_Shadowman;
         temp->actor.loadByName("shadowman");
-        return temp;
     }
     else if (unit_class == "grunt")
     {
-        return new Unit_Grunt;
+        temp = new Unit_Grunt;
+        temp->actor.loadByName("shadowman");
     }
     else
     {
         //Come up with a suitable default/error class...?
-        return new Unit_Shadowman;
+        temp = new Unit_Shadowman;
+        temp->actor.loadByName("shadowman");
     }
+    return temp;
 }
