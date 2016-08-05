@@ -1,7 +1,7 @@
 # depslib dependency file v1.0
 33292676 פקü
 
-1470313237 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
+1470322706 source:d:\code projects\cpp\sunsyndrome\source\main.cpp
 	<iostream>
 	<string>
 	<functional>
@@ -56,7 +56,7 @@
 	<allegro5/allegro.h>
 	<allegro5/allegro_image.h>
 
-1469890995 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
+1470322706 source:d:\code projects\cpp\sunsyndrome\source\space.cpp
 	"Space.h"
 
 1469772186 source:d:\code projects\cpp\sunsyndrome\source\topdowndisplay.cpp
@@ -66,11 +66,11 @@
 1469772186 d:\code projects\cpp\sunsyndrome\source\topdowndisplay.h
 	"IDisplay.h"
 
-1469884992 d:\code projects\cpp\sunsyndrome\source\idisplay.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\idisplay.h
 	"ImageList.h"
 	"Space.h"
 
-1469885424 d:\code projects\cpp\sunsyndrome\source\space.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\space.h
 	<string>
 	<allegro5/allegro.h>
 	"ImageList.h"
@@ -78,7 +78,7 @@
 1470319907 source:d:\code projects\cpp\sunsyndrome\source\isometricdisplay.cpp
 	"IsometricDisplay.h"
 
-1470312864 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\isometricdisplay.h
 	<iostream>
 	<fstream>
 	<memory>
@@ -93,10 +93,10 @@
 
 1466001505 
 
-1470320723 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
+1470322720 source:d:\code projects\cpp\sunsyndrome\source\actor.cpp
 	"Actor.h"
 
-1470320054 d:\code projects\cpp\sunsyndrome\source\actor.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\actor.h
 	<exception>
 	<iostream>
 	<string>
@@ -113,7 +113,7 @@
 1467037397 source:d:\code projects\cpp\sunsyndrome\source\hashtable.cpp
 	"HashTable.h"
 
-1470018963 d:\code projects\cpp\sunsyndrome\source\hashtable.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\hashtable.h
 	<functional>
 	<iostream>
 	<memory>
@@ -163,10 +163,10 @@
 1469772186 source:d:\code projects\cpp\sunsyndrome\source\tokenizer.cpp
 	"Tokenizer.h"
 
-1469885812 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
+1470322706 source:d:\code projects\cpp\sunsyndrome\source\game.cpp
 	"Game.h"
 
-1469798501 d:\code projects\cpp\sunsyndrome\source\game.h
+1470322706 d:\code projects\cpp\sunsyndrome\source\game.h
 	<iostream>
 	<memory>
 	<string>
@@ -184,6 +184,6 @@
 	<list>
 	<cmath>
 
-1469972101 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
+1470322706 source:d:\code projects\cpp\sunsyndrome\source\astar.cpp
 	"AStar.h"
 

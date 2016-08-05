@@ -7,6 +7,7 @@ public:
     {
         this->cur_frame = 0;
         this->cur_time = 0;
+        this->natural = true;
     }
     ~Animation()
     {
