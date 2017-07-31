@@ -1,0 +1,6 @@
+
+*.o
+source/bin/Debug/sunsyndrome.exe
+allegro.log
+source/sunsyndrome.layout
+source/sunsyndrome.layout
